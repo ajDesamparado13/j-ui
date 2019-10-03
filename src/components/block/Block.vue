@@ -1,0 +1,125 @@
+<template>
+    <div id="ui-block" class="ui-block block">
+        <div class="block-background"> </div>
+        <div class="block-content">
+            <ui-progress-circular
+                :size="48"
+                :stroke="5"
+                :type="type"
+                :progress="progress"
+                ></ui-progress-circular>
+            <div class="box block-message" v-if="has_process || block_message">
+                <span v-if="has_process">{{block_process}}%</span>
+                <slot><span v-if="block_message">{{block_message}}</span></slot>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<script>
+import { ProgressCircular } from '../progress'
+export default {
+    name:'ui-block',
+    data(){
+        return {
+            block_process:'',
+            block_message:'',
+            previous_style:'',
+            width:0,
+            height:0,
+        }
+    },
+    computed:{
+        has_process(){
+            return this.block_process.toString().length > 0
+        },
+        style(){
+            var width = this.width;
+            var height = this.height;
+            if(!width || !height){
+                return "";
+            }
+            return `width:${width}px;height:${height}px`;
+        },
+    },
+    props:{
+        type:{
+            type:String,
+            default:'indeterminate',
+        },
+        message:{
+            type:String,
+            default:'',
+        },
+        progress:{
+            type:[String,Number],
+            default:"",
+        },
+        loading:{
+            type:Boolean,
+            default:false,
+        },
+        container: HTMLElement,
+    },
+    methods:{
+        removeElement(el) {
+            if (typeof el.remove !== 'undefined') {
+                el.remove()
+            } else {
+                el.parentNode.removeChild(el)
+            }
+        },
+        close(){
+            if(this.container){
+                this.container.style = this.previous_style;
+            }
+            this.$destroy();
+            this.removeElement(this.$el);
+            return null;
+        },
+        setProgress(progress){
+            this.block_process = progress;
+        },
+        setMessage(message){
+            this.block_message = message;
+        },
+        updateStyle(){
+            this.width = this.container.clientWidth;
+            this.height = this.container.clientHeight;
+        },
+        mountToBody(){
+            this.$el.style['position'] = "fixed";
+            document.body.appendChild(this.$el);
+        },
+        mountToContainer(){
+            this.$el.style['position'] = "absolute";
+            this.previous_style = this.container.style;
+            this.container.insertBefore(this.$el,this.container.firstChild)
+            this.container.style['position'] = "relative";
+            this.updateStyle();
+        },
+    },
+    beforeMount(){
+        if (!this.container) {
+            this.mountToBody();
+        } else {
+            this.mountToContainer();
+        }
+    },
+    mounted(){
+        if (!this.container) {
+            this.$el.style['position'] = "fixed";
+        } else {
+            this.$el.style['position'] = "absolute";
+        }
+    },
+    created(){
+        this.block_process = this.progress
+        this.block_message = this.message
+    },
+    components:{
+        'ui-progress-circular':ProgressCircular,
+    }
+}
+</script>

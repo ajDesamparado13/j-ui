@@ -1,0 +1,29 @@
+
+// Fonts
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
+$fa-font-path: "~font-awesome/fonts/";
+//@import "~font-awesome/scss/font-awesome.scss";
+@import "node_modules/font-awesome/scss/font-awesome.scss";
+
+// Variables
+@import '_variables';
+
+// Variables
+@import "_imports";
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html,body{
+    -webkit-overflow-scrolling : touch !important;
+}
+
+html {
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+}
+
+body{
+    zoom:100%;
+}

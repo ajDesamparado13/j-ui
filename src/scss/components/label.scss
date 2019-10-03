@@ -1,0 +1,50 @@
+// ================================================
+// Label
+// ================================================
+.label{
+    position:relative;
+    @media screen and (min-width:$bp-hands-wide){
+        white-space:nowrap;
+    }
+}
+
+.label-top{
+    >label{
+        min-height:1.85em;
+        width:100%;
+    }
+}
+
+.label-right{
+    .form-content{flex-direction:row-reverse;}
+    .label{margin-left:10px;margin-bottom:0px;}
+}
+
+.label-left{
+    .label{margin-right:10px;margin-bottom:0px;}
+}
+.label-required{
+    word-break:keep-all;
+    font-size:rem-calc(11px);
+    margin-left:1em;
+    background-color:$danger;
+    color:#eee;
+    padding:0px 0.25em;
+}
+.label-extra{
+    font-weight:initial;
+    margin-left:1em;
+    padding:0px 0.25em;
+    @media only screen and (max-width: $bp-hands-wide){
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.title-addon {
+  span {
+    font-weight: bold;
+  }
+}
