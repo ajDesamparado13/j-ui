@@ -6,7 +6,7 @@
         :type="type"
         :value="newValue"
         @keypress.enter="onEnter"
-        >
+        />
 </template>
 
     <script>

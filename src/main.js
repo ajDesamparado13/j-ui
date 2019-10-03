@@ -6,6 +6,7 @@ import App from './App'
 import routes from './views'
 
 import installer from './core'
+import components from './components'
 moment.locale('ja')
 
 Vue.config.productionTip = false
@@ -19,6 +20,7 @@ const config = {
     attachTo: options
   }
 }
+Vue.use(components)
 Vue.use(installer, config)
 
 var app = new Vue(options)

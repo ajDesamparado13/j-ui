@@ -51,7 +51,6 @@
 <script>
 import BaseForm from '../BaseForm'
 import BaseUI from '../BaseUI'
-import autosize from 'autosize';
 import Control from '../control'
 import Area from './Area'
 import Input from './Input'
@@ -66,7 +65,6 @@ export default {
     data() {
         return {
             initialValue: this.value,
-            autosizeInitialized: false,
             newValue:'',
         };
     },
@@ -86,10 +84,6 @@ export default {
         autofocus: {
             type: Boolean,
             default: false
-        },
-        autosize: {
-            type: Boolean,
-            default: true
         },
         maxlength: Number,
         enforceMaxlength: {
