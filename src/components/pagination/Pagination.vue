@@ -121,3 +121,43 @@ export default{
     },
 }
 </script>
+
+<style lang="scss">
+.ui-pagination {
+    display:flex;
+    width:100%;
+    justify-content:center;
+
+    .pagination{
+        .prev-page,.next-page{
+            @media only screen and (max-width:$bp-hands-wide){
+                max-width:rem-calc(30px);
+            }
+        }
+        display:flex;
+        @media only screen and (max-width:$bp-hands-wide){
+            flex-wrap:nowrap;
+        }
+        align-items:center;
+        .ui-button{
+            min-width:1rem;
+            border:none;
+        }
+        .button{
+            opacity:initial
+        }
+        .end-page,.start-page{
+            display:flex;
+            align-items:center;
+            span:first-child{ margin-right:rem-calc(10px); }
+            span:last-child{ margin-left:rem-calc(10px); }
+        }
+        .ui-pagination-item{
+            &:not(:last-child){
+                margin-right:rem-calc(3px);
+            }
+        }
+    }
+}
+
+</style>

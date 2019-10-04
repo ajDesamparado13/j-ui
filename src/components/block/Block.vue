@@ -123,3 +123,43 @@ export default {
     }
 }
 </script>
+
+
+<style lang="scss">
+.ui-block{
+    @include overlay(0);
+    overflow: hidden;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    position: fixed;
+    z-index: $modal-z;
+
+    .block-background{
+        @include overlay(0);
+        background-color: $modal-background-background-color;
+    }
+    .block-content{
+        display:flex;
+        flex-wrap:wrap;
+        align-items:center;
+        justify-content:center;
+        margin: 0 20px;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        .ui-block-message{
+            width:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:none;
+            border:none;
+            color:white;
+        }
+    }
+}
+
+</style>

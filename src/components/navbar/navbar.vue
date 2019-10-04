@@ -1,0 +1,74 @@
+<template>
+  <nav class="layout-header navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <slot name="brand">
+        <a class="navbar-item" :href="brand.href">
+          <img :src="brand.src" :alt="brand.alt" />
+        </a>
+      </slot>
+      <a
+        v-if="hasBurger"
+        @click.capture="toggle"
+        role="button"
+        class="navbar-burger"
+        :class="{'is-active':show}"
+        aria-label="menu"
+        aria-expanded="false"
+      > <span aria-hidden="true" v-for="n in 3"></span>
+      </a>
+    </div>
+    <div class="navbar-menu" :class="{'is-active':show}">
+      <div class="navbar-start">
+        <slot name="start"></slot>
+      </div>
+      <div class="navbar-end">
+        <slot name="end"> </slot>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: "ui-navbar",
+  data() {
+    return {
+      show: false
+    };
+  },
+  props: {
+    brand: {
+      type:Object,
+      required: false
+    },
+    hasBurger: {
+      type: Boolean,
+      default: true
+    }
+  },
+  methods:{
+    toggle(){
+      this.show = !this.show;
+      this.$emit(this.show ? 'show':'false');
+    },
+  }
+};
+</script>
+
+<style lang="scss">
+.navbar{
+  .navbar-burger{
+    &.is-active{
+      span:nth-child(1){
+        transform:translateY(5px) rotate(45deg)
+      }
+      span:nth-child(2){
+        opacity:0;
+      }
+      span:nth-child(3){
+      transform: translateY(-5px) rotate(-45deg);
+      }
+    }
+  }
+}
+</style>

@@ -8,10 +8,8 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: `@import "~@/scss/_variables.scss";`
+        data: `@import "~@/scss/_imports.scss";`
       }
-
     }
-
   }
 }

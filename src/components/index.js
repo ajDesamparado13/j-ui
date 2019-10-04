@@ -24,7 +24,7 @@ import ProgressBarProgrammatic, { ProgressBar } from './progress-bar'
 import NotificationProgrammatic, { Notification } from './notification'
 import { Header, HeaderItem } from './header'
 // import Sidebar from './sidebar'
-// import Toolbar from './toolbar'
+import Navbar from './navbar'
 import Pagination from './pagination'
 // import Panel from './panel'
 import { Select, Pick } from './select'
@@ -81,9 +81,9 @@ const components = {
   // Taginput,
   // Timepicker,
   // Tooltip,
-  FileSelect
+  FileSelect,
   // Sidebar,
-  // Toolbar,
+  Navbar
   // PdfViewer,
 }
 

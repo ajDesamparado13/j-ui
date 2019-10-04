@@ -191,3 +191,38 @@ export default {
     }
 }
 </script>
+<style lang="scss">
+.modal-is-hidden{
+    .modal-content{
+        display:none;
+    }
+}
+
+.ui-modal {
+    .modal-content {
+        background-color: #FBFBFB;
+        @supports(-webkit-overflow-scrolling: touch){
+            @media only screen and (max-width: $bp-palm-wide){
+                max-height: calc(100vh - 240px);
+            }
+        }
+        @supports not (-webkit-overflow-scrolling: touch){
+            @media only screen and (max-width: $bp-palm-wide){
+                max-height: calc(100vh - 40px);
+            }
+        }
+    }
+    .close-button{
+        background-color:inherit;
+        border:none;
+        color:#006a4d;
+        font-size:18px;
+        font-weight:550;
+        position:absolute;
+        right:30px;
+        top:30px;
+
+    }
+}
+
+</style>

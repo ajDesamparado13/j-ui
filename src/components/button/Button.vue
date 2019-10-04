@@ -82,3 +82,10 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+.button{
+    margin:0.5rem;
+}
+
+</style>

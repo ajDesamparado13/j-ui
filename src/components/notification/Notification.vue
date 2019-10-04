@@ -131,3 +131,13 @@ export default {
     }
 };
 </script>
+
+
+<style lang="scss">
+.ui-notification{
+    @media only screen and (max-width:$bp-hands){
+        //font-size:1.2rem;
+    }
+}
+
+</style>

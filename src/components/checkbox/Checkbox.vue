@@ -176,7 +176,7 @@ export default {
             this.newValue = flag ? this.trueValue : this.falseValue;
             return this.newValue;
         },
-        /* 
+        /*
          * Array submit type value-prop update}
          */
         arrayUpdate(){
@@ -209,7 +209,7 @@ export default {
         },
         update(){
             if(this.isArray){
-                return this.arrayUpdate() 
+                return this.arrayUpdate()
             }
             return this.valueUpdate();
         },
@@ -238,7 +238,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../styles/imports';
+@import '../../scss/imports';
 
 $ui-checkbox-border-width           : rem-calc(1px) !default;
 $ui-checkbox-checkmark-width        : rem-calc(2px) !default;
