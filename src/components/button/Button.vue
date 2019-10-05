@@ -15,6 +15,9 @@ export default {
         }
     },
     props:{
+        model:{
+            required:false,
+        },
         isFullwidth:{
             type:Boolean,
             default:false,
@@ -71,7 +74,11 @@ export default {
                 return;
             }
             this.handler_loading = true;
-            var promise = this.handler();
+            if(this.model){
+                var promise = this.handler(this.model);
+            }else{
+                var promise = this.handler();
+            }
             if(promise && typeof promise.then == 'function'){
                 promise.then(()=>{this.handler_loading = false});
             }else{
