@@ -2,7 +2,7 @@
   <nav class="layout-header navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <slot name="brand">
-      <router-link class="navbar-item" :to="href">
+      <router-link class="navbar-item" :to="brand.href">
           <img :src="brand.src" :alt="brand.alt" />
       </router-link>
       </slot>
