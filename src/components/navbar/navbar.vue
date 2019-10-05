@@ -2,9 +2,9 @@
   <nav class="layout-header navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <slot name="brand">
-        <a class="navbar-item" :href="brand.href">
+      <router-link class="navbar-item" :to="href">
           <img :src="brand.src" :alt="brand.alt" />
-        </a>
+      </router-link>
       </slot>
       <a
         v-if="hasBurger"
