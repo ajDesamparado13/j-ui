@@ -1,0 +1,62 @@
+// Fonts
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
+$fa-font-path: "~font-awesome/fonts/";
+//@import "~font-awesome/scss/font-awesome.scss";
+@import "node_modules/font-awesome/scss/font-awesome.scss";
+
+// Variables
+/*
+! VARIABLES MUST BE IMPORTED FIRST BEFORE BULMA !
+*/
+@import "_variables";
+@import "~bulma/bulma.sass";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  zoom: 100%;
+  -webkit-overflow-scrolling: touch !important;
+}
+html {
+  -webkit-overflow-scrolling: touch !important;
+  width: 100%;
+  min-height: 100%;
+  overflow-y: auto !important;
+}
+
+body,
+.app-main {
+  width: 100%;
+  min-height: 100vh;
+  height: 100% !important;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+.app-container {
+}
+
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  background: $primary;
+}
+#nav {
+  padding: 30px;
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
+}

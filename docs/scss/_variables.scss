@@ -1,0 +1,93 @@
+// ================================================
+// TABLE OF CONTENTS
+// ================================================
+// 1. COLORS VARIABLE
+// 2. FONT VARIABLE
+// 3. GENERAL GAP AND DEVICE SIZES
+// 4. BREAKPOINT VARIABLE
+// ================================================
+
+// ================================================
+// Colors
+// ================================================
+$primary: #57817d;
+$danger: #f44336;
+$error: $danger;
+$accent: #69be28;
+
+// ================================================
+// LAYOUT BACKGROuND COLORS
+// ================================================
+$sidebar-bg: #f3efec;
+$sidebar-item-bg: $primary;
+$header-bg: #f3efec;
+$footer-bg: $primary;
+
+// LAYOUT MAX SIZES
+$sidebar-max-width: 20vh;
+$header-max-height: 10vh;
+
+$sidebar-min-height: calc(100vh - #{$header-max-height});
+
+// ================================================
+// Font sizes
+// ================================================
+$body-size: 81.25% !default;
+
+$family-sans-serif: "游ゴシック体", "Yu Gothic", YuGothic, "ヒラギノ角ゴ Pro",
+  "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, "MS Pゴシック", "MS PGothic",
+  sans-serif, FontAwesome;
+$size-1: 3rem !default;
+$size-2: 2.5rem !default;
+$size-3: 2rem !default;
+$size-4: 1.5rem !default;
+$size-5: 1.25rem !default;
+$size-6: 1rem !default;
+$size-7: 0.75rem !default;
+
+// ================================================
+// GENERAL GAP AND DEVICE SIZE
+// ================================================
+$gap: 32px !default;
+$mobile: 320px;
+$tablet: 769px;
+$desktop: 960 + (2 * $gap) !default;
+$widescreen: 1152 + (2 * $gap) !default;
+$fullhd: 1344 + (2 * $gap) !default;
+
+// ================================================
+// BREAKPOINTS
+// ================================================
+$bp-palm: $mobile !default;
+$bp-palm-wide: 414px !default;
+$bp-hands: 600px !default;
+$bp-hands-wide: 850px !default;
+$bp-desktop: $desktop !default;
+$bp-widescreen: $widescreen !default;
+$bp-fullhd: $fullhd !default;
+
+// The Material Design color palette
+@import "md-colors";
+
+// The UI font stack
+$font-stack: Roboto, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", Helvetica, Arial,
+  sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+
+// Base font size
+$base-font-size: 100% !default; // typically 16px in most browsers
+
+// Primary text color
+$primary-text-color: rgba(black, 0.87) !default;
+
+// Secondary text color
+$secondary-text-color: rgba(black, 0.54) !default;
+
+// Hint text color
+$hint-text-color: rgba(black, 0.38) !default;
+
+// Disabled text color
+$disabled-text-color: rgba(black, 0.38) !default;
+
+// Divider color
+$divider-color: rgba(black, 0.12) !default;

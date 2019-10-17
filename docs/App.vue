@@ -10,9 +10,9 @@
 
 <script>
 import './scss/app.scss'
-import NotificationContainer from '@/partials/NotificationContainer'
-import Header from '@/partials/Header'
-import Footer from '@/partials/Footer'
+import NotificationContainer from '@docs/partials/NotificationContainer'
+import Header from '@docs/partials/Header'
+import Footer from '@docs/partials/Footer'
 export default {
   name: 'app-container',
   components: {
