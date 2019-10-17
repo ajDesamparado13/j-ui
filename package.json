@@ -16,13 +16,14 @@
     "url": "https://github.com/ajDesamparado13/j-ui/issues"
   },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name j-ui ./src/components/index.js",
+    "serve": "vue-cli-service serve ./docs/main.js",
+    "build": "vue-cli-service build --target lib --name j-ui ./src/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "autosize": "^4.0.2",
     "bulma": "^0.7.5",
-    "autosize": "^4.0.2"
+    "tether-drop": "^1.4.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
