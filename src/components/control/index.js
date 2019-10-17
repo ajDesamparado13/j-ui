@@ -1,3 +1,12 @@
 import Control from './Control'
+import { use, registerComponent } from '@/utils/plugins'
 
-export default Control
+const Plugin = {
+  install (Vue) {
+    registerComponent(Vue, Control)
+  }
+
+}
+use(Plugin)
+
+export default Plugin

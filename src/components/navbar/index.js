@@ -1,3 +1,17 @@
-import navbar from './navbar'
+import Navbar from './Navbar'
 
-export default navbar
+import { use, registerComponent } from '@/utils/plugins'
+
+export {
+  Navbar
+}
+
+const Plugin = {
+  install (Vue) {
+    registerComponent(Vue, Navbar)
+  }
+
+}
+use(Plugin)
+
+export default Plugin

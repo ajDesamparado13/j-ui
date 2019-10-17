@@ -1,3 +1,12 @@
 import Collapse from './Collapse'
+import { use, registerComponent } from '@/utils/plugins'
 
-export default Collapse
+const Plugin = {
+  install (Vue) {
+    registerComponent(Vue, Collapse)
+  }
+
+}
+use(Plugin)
+
+export default Plugin

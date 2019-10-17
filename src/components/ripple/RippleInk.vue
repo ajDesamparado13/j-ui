@@ -7,7 +7,7 @@
  * Adapted from rippleJS (https://github.com/samthor/rippleJS, version 1.0.3)
  * removed jQuery, converted to ES6
  */
-import classlist from './helpers/classlist';
+import classlist from '@/helpers/classlist';
 
 const startRipple = function (eventType, event) {
     let holder = event.currentTarget || event.target;

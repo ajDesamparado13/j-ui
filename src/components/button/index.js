@@ -1,3 +1,12 @@
 import Button from './Button'
+import { use, registerComponent } from '@/utils/plugins'
 
-export default Button
+const Plugin = {
+  install (Vue) {
+    registerComponent(Vue, Button)
+  }
+
+}
+use(Plugin)
+
+export default Plugin
