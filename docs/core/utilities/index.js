@@ -1,8 +1,8 @@
 import test from './test'
 import config from './config'
 import date from './date'
-import formatter from './formatter'
 import colors from './colors'
+import formatter from './formatter'
 import mobile from './mobile'
 // import lodash from './lodash/lodash'
 // import handler from './handler/handler'
@@ -20,7 +20,6 @@ const HelperUtility = {
   date,
   test,
   config,
-  formatter,
   // lodash,
   // handler,
   // unique,
