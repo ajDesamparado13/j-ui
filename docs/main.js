@@ -25,7 +25,7 @@ const config = {
         progress = null
       }
       if (to.name != from.name) {
-        progress = router.app.$progress.show()
+        // progress = router.app.$progress.show()
       }
     },
     afterEach: (router) => {
@@ -37,6 +37,7 @@ const config = {
 
   }
 }
+
 Vue.use(components)
 Vue.use(installer, config)
 
