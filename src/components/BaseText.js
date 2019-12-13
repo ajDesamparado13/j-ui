@@ -1,4 +1,4 @@
-import formatter from '../../utils/formatter';
+import formatter from '../utils/formatter';
 export default{
     data(){
         return{

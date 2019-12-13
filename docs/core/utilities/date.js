@@ -1,4 +1,4 @@
-import dateUtil from '@src/utils/date'
+import dateUtil from '@/utils/date'
 
 export default function (Vue) {
   Vue.date = dateUtil

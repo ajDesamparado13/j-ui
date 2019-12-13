@@ -6,7 +6,7 @@
 <script>
 import BaseText from '../BaseText'
 import BaseUI from '../BaseUI'
-import formatter from '@src/utils/formatter';
+import formatter from '../../utils/formatter';
 export default{
     extends:BaseUI,
     name:'ui-text',

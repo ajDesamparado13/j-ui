@@ -1,4 +1,4 @@
-import masks from '@src/utils/masks'
+import masks from '@/utils/masks'
 export default function (Vue) {
   Vue.masks = masks
   Object.defineProperties(Vue.prototype, {
