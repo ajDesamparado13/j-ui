@@ -1,6 +1,6 @@
 import Sidebar from './Sidebar'
 
-import { use, registerComponent } from '@/utils/plugins'
+import { use, registerComponent } from '../../utils/plugins'
 
 export {
   Sidebar

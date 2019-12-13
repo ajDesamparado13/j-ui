@@ -6,11 +6,13 @@
         :type="type"
         :value="newValue"
         @keypress.enter="onEnter"
-        />
+        >
 </template>
 
     <script>
 import config from '../config'
+import formatter from '../../utils/formatter';
+import masks from '../../utils/masks';
 export default {
     name:'ui-input',
     model:{
@@ -22,6 +24,7 @@ export default {
             preventUpdate:false,
             initialValue: this.value,
             newValue:'',
+            targetValue:'',
         };
     },
     props: {
@@ -62,9 +65,15 @@ export default {
             required:false,
         },
     },
+    computed:{
+      formatObject(){
+        return formatter.getObjectParameters(this.format,{value:this.targetValue})
+      }
+
+    },
     methods:{
         isEmpty(value){
-            return this.$formatter.isEmpty(value);
+            return formatter.isEmpty(value);
         },
         onEnter(e) {
             var value = e.target.value;
@@ -77,7 +86,7 @@ export default {
             })
         },
         onKeydown(event) {
-            if(this.$masks.only.is_special_key(event)){
+            if(masks.only.is_special_key(event)){
                 return;
             }
             var value = event.target.value;
@@ -85,12 +94,14 @@ export default {
             if(maxlength && value.length >= maxlength){
                 return event.preventDefault();
             }
-            switch(this.format){
-                case 'number': return this.$masks.only.number_keys(event);break;
-                case 'decimal': return this.$masks.only.decimal_keys(event);break;
+            let {format,options} = this.formatObject
+            switch(format){
+                case 'number': return masks.only.number_keys(event,options);break;
+                case 'decimal': return masks.only.decimal_keys(event,options);break;
+                case 'password': return masks.only.password_keys(event,options);break;
             }
-            if(this.format.indexOf('date') >= 0){
-                this.$masks.only.date_keys(event)
+            if(format.indexOf('date') >= 0){
+                return masks.only.date_keys(event)
             }
         },
         updateValue(event){
@@ -99,13 +110,15 @@ export default {
             }
             this.$nextTick(() => {
                 var value = event.target.value
-                this.setValue( value )
+                var key = value[value.length - 1]
+                this.targetValue = value;
+                this.setValue( value,key)
             })
         },
         /*
          * Set the raw value into formatted value
          */
-        setValue(value){
+        setValue(value,key){
 
             if(this.isEmpty(value)){
                 this.newValue = '';
@@ -113,7 +126,7 @@ export default {
             }
 
             if(this.toHalfWidth){
-                value = this.$formatter.toHalfWidth(value);
+                value = formatter.toHalfWidth(value);
             }
 
             if(this.isLowercase){
@@ -128,12 +141,12 @@ export default {
                 value = value.substring(0,maxlength);
             }
 
-            var format  = this.format;
+            var { format,options }  = this.formatObject;
             if(format == 'text'){
                 this.newValue = value;
                 return;
-            }else{
-                value = this.$formatter.format(value,format)
+            }else if(!( key === '.' && format === 'decimal' )){
+                  value = formatter.format(value,format,options)
             }
             if(typeof this.beforeUpdate == 'function'){
                 this.newValue = this.beforeUpdate(value);
@@ -147,11 +160,11 @@ export default {
          * Get the unformatted value
          */
         getRaw(value){
-            var format  = this.format;
+            var { format,options }  = this.formatObject;
             if(format == 'text' || this.type != 'text'){
                 return value;
             }
-            value = this.$formatter.getValue(value,format);
+            value = formatter.getValue(value,format,options);
             return value;
         },
         clear(){

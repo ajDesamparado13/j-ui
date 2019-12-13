@@ -1,3 +1,4 @@
+import formatter from '../../utils/formatter';
 export default{
     data(){
         return{
@@ -45,9 +46,12 @@ export default{
         }
     },
     computed:{
+        formatObject(){
+          return formatter.getObjectParameters(this.format,{value:this.value})
+        },
         default_value(){
             var type = this.type;
-            var format = this.format;
+            var { format } = this.formatObject;
             if(type == 'text' && format != 'text' && !this.defaultStrict){
                 return 0;
             }
@@ -66,12 +70,12 @@ export default{
             }
 
             var type = this.type;
-            var format = this.format;
+            var { format } = this.formatObject;
             var suffix = this.suffix;
             var prefix = this.prefix;
 
             if(type == 'text' && format != 'text'){
-                displayValue = this.formatInto(displayValue,format);
+                displayValue = this.formatInto(displayValue);
             }
 
             if(type == 'text' && (Boolean(prefix) || Boolean(suffix))){
@@ -82,7 +86,8 @@ export default{
         }
     },
     methods:{
-        formatInto(value,format,type = this.type){
+        formatInto(value){
+            var { format,options } = this.formatObject;
             if(format == 'number' || format == 'decimal' || format == 'currency'){
                 var multiplier = this.multiplier;
                 var divider = this.divider;
@@ -93,11 +98,11 @@ export default{
                     value = value * this.multiplier;
                 }
             }
-            value = this.$formatter.format(value,format);
+            value = formatter.format(value,format,options);
             return value;
         },
         getNumberOnly(value){
-            return this.$formatter.getNumberOnly(value);
+            return formatter.getNumberOnly(value);
         },
     },
 }

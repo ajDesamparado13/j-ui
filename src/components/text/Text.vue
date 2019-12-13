@@ -6,6 +6,7 @@
 <script>
 import BaseText from '../BaseText'
 import BaseUI from '../BaseUI'
+import formatter from '@src/utils/formatter';
 export default{
     extends:BaseUI,
     name:'ui-text',
@@ -36,12 +37,15 @@ export default{
         },
     },
     computed:{
+        formatObject(){
+          return formatter.getObjectParameters(this.format,{value:this.value})
+        },
         default_value(){
             if(this.value === '-'){
                 return this.value;
             }
             var type = this.type;
-            var format = this.format;
+            var { format } = this.formatObject;
             if(type == 'text' && format != 'text' && !this.defaultStrict){
                 return 0;
             }
@@ -80,7 +84,7 @@ export default{
                 displayValue = displayValue.label;
             }
 
-            if(this.$formatter.isEmpty(displayValue))
+            if(formatter.isEmpty(displayValue))
             {
                 displayValue = this.default_value;
                 if(this.defaultStrict){
@@ -90,12 +94,12 @@ export default{
 
 
             var type = this.type;
-            var format = this.format;
+            var { format } = this.formatObject;
             var suffix = this.suffix;
             var prefix = this.prefix;
 
             if(type == 'text' && format != 'text'){
-                displayValue = this.formatInto(displayValue,format);
+                displayValue = this.formatInto(displayValue);
             }
 
             if(type == 'text' && (Boolean(prefix) || Boolean(suffix))){

@@ -1,6 +1,6 @@
 import Table from './Table'
 
-import { use, registerComponent } from '@/utils/plugins'
+import { use, registerComponent } from '../../utils/plugins'
 
 export {
   Table

@@ -1,7 +1,7 @@
 import Field from './Field'
 import FieldGroup from './FieldGroup'
 
-import { use, registerComponent } from '@/utils/plugins'
+import { use, registerComponent } from '../../utils/plugins'
 
 export {
   FieldGroup,

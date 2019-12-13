@@ -1,6 +1,6 @@
 import Select from './Select'
 import Pick from './Pick'
-import { use, registerComponent } from '@/utils/plugins'
+import { use, registerComponent } from '../../utils/plugins'
 
 export {
   Select,

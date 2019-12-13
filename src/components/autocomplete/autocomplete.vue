@@ -66,7 +66,7 @@ import BaseForm from '../BaseForm'
 import Control from '../control'
 import BaseUI from '../BaseUI'
 import Input from '../input/Input'
-
+import masks from '../../utils/masks';
 import helpers from '../helpers'
 const getValueByPath = helpers.util.getValueByPath;
 const escapeRegExpChars = helpers.util.escapeRegExpChars;
@@ -261,7 +261,7 @@ export default {
          */
         pick(e,hovered=this.hovered) {
             if (hovered === null) {
-                if(this.$masks.only.is_enter_key(e)){
+                if(masks.only.is_enter_key(e)){
                     this.$emit('keydown-enter',e);
                 }
                 this.isActive = false

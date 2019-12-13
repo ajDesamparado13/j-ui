@@ -10,6 +10,7 @@
 
 <script>
 import autosize from 'autosize';
+import formatter from '../../utils/formatter';
 
 export default {
     name:'ui-textarea',
@@ -46,7 +47,7 @@ export default {
             })
         },
         isEmpty(value){
-            return this.$formatter.isEmpty(value);
+            return formatter.isEmpty(value);
         },
         updateValue(event){
             if(event == undefined){

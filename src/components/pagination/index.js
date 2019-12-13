@@ -1,6 +1,6 @@
 import Pagination from './Pagination'
 
-import { use, registerComponent } from '@/utils/plugins'
+import { use, registerComponent } from '../../utils/plugins'
 
 const Plugin = {
   install (Vue) {

@@ -1,5 +1,5 @@
 <template>
-  <nav class="layout-header navbar" role="navigation" aria-label="main navigation">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <slot name="brand">
       <router-link class="navbar-item" :to="brand.href">
