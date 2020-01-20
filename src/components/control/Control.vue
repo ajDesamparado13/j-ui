@@ -18,6 +18,7 @@
 
 
 <script>
+import iconComponent from '../icon/Icon';
 export default {
     name:'ui-control',
     props:{
@@ -52,5 +53,8 @@ export default {
             this.$refs['icon-right'].$el.style.height = height;
         }
     },
+    components:{
+      'ui-icon' : iconComponent
+    }
 }
 </script>

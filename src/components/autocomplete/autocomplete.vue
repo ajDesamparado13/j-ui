@@ -67,7 +67,7 @@ import Control from '../control'
 import BaseUI from '../BaseUI'
 import Input from '../input/Input'
 import masks from '../../utils/masks';
-import helpers from '../helpers'
+import helpers from '../../helpers'
 const getValueByPath = helpers.util.getValueByPath;
 const escapeRegExpChars = helpers.util.escapeRegExpChars;
 export default {

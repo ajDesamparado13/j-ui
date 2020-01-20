@@ -9,4 +9,5 @@ const Plugin = {
 }
 use(Plugin)
 
+export { Collapse }
 export default Plugin

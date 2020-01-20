@@ -1,5 +1,5 @@
 <template>
-    <div id="ui-block" class="ui-block block">
+    <div class="ui-block block" v-bind="{id}">
         <div class="block-background"> </div>
         <div class="block-content">
             <ui-progress-circular
@@ -18,7 +18,7 @@
 
 
 <script>
-import { ProgressCircular } from '../progress'
+import ProgressCircular from '../progress/Circular'
 export default {
     name:'ui-block',
     data(){
@@ -44,6 +44,10 @@ export default {
         },
     },
     props:{
+        id:{
+          type:String,
+          default:'ui-block',
+        },
         type:{
             type:String,
             default:'indeterminate',

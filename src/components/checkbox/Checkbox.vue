@@ -65,13 +65,16 @@ export default {
             default: false
         },
         keyName:{
-            type:String,
             required:false,
         },
         submitArray:{
             type:Boolean,
             default:false,
         },
+        submitObject:{
+            type:Boolean,
+            default:false,
+        }
     },
 
     data() {
@@ -103,8 +106,23 @@ export default {
                 this.setValue(flag);
             },
         },
-        isArray(){
+        /*
+        * Check if value is of object type and not an array
+        */
+        isValueObject(){
+          return ( !Array.isArray(this.value) && typeof this.value === 'object' ) ||  this.submitObject
+        },
+        /*
+        * Check if value is of array type
+        */
+        isValueArray(){
             return this.submitArray || Array.isArray(this.value);
+        },
+        /*
+        * Check if value is of primary type
+        */
+        isValuePrimary(){
+          return typeof this.value != 'object'
         },
         classes() {
             return [
@@ -115,12 +133,7 @@ export default {
             ];
         }
     },
-
     watch: {
-        //value:{
-        //    deep:true,
-        //    handler:'update',
-        //},
         newValue(value){
             if(value === '' || typeof value === 'undefined' || value === null){
                 return;
@@ -134,21 +147,21 @@ export default {
         * or if checkbox is on inverse mode
         * then set newValue to true by default
         */
-        if(this.checked || ( this.isInverse && this.valueIndex < 0)){
-            this.newValue = this.trueValue;
-        }
+        //if(this.checked || ( this.isInverse && this.valueIndex < 0)){
+        //    this.newValue = this.trueValue;
+        //}
         /*
         * if value type is not array then update  new value
         * depending on loose equal result of value and true value
         */
-        if(!this.isArray){
+        if(this.isValuePrimary){
             this.newValue = this.looseEqual(this.value,this.trueValue);
         }
     },
     mounted(){
-        if(!this.isArray){
-            this.$watch('value',this.update,{deep:true})
-
+        if(this.isValuePrimary){
+            var deep = typeof this.value === 'object';
+            this.$watch('value',this.update,{ deep })
         }
     },
     methods: {
@@ -173,15 +186,17 @@ export default {
             if(typeof flag != 'boolean'){
                 flag =  this.looseEqual(flag,this.trueValue);
             }
-            this.newValue = flag ? this.trueValue : this.falseValue;
+            if(flag != this.isChecked){
+              this.newValue = flag ? this.trueValue : this.falseValue;
+            }
             return this.newValue;
         },
         /*
          * Array submit type value-prop update}
          */
         arrayUpdate(){
-            var index = this.valueIndex;
             var list = this.value;
+            var index = this.valueIndex;
             var checked = this.isInverse ? !this.isChecked : this.isChecked
 
             if(checked && index < 0){
@@ -189,27 +204,33 @@ export default {
             }
 
             if(!checked && index >= 0){
-                this.$delete(list,index)
+                this.$delete(list,this.valueIndex)
             }
-
+        },
+        objectUpdate(){
+            var checked = this.isInverse ? !this.isChecked : this.isChecked
+            if(checked){
+              this.value[this.keyName] = this.newValue;
+            }else{
+              delete this.value[this.keyName];
+            }
         },
         /*
          * Non Array submit value-prop update
          */
         valueUpdate(){
-            if(this.isArray){
-                return;
-            }
-
-            if(this.looseEqual(this.newValue,this.value)){
+            if(!this.isValuePrimary || this.looseEqual(this.newValue,this.value)){
                 return;
             }
             this.$emit('update',this.newValue);
-            return;
         },
         update(){
-            if(this.isArray){
+            if(this.isValueArray){
                 return this.arrayUpdate()
+            }
+            if(this.isValueObject){
+              return this.objectUpdate();
+
             }
             return this.valueUpdate();
         },
@@ -238,7 +259,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../scss/imports';
+@import '../../styles/imports';
 
 $ui-checkbox-border-width           : rem-calc(1px) !default;
 $ui-checkbox-checkmark-width        : rem-calc(2px) !default;

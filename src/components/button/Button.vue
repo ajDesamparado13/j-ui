@@ -67,12 +67,14 @@ export default {
     },
     classes() {
       var classes = [
-        `is-${this.color}`,
         { "is-loading": this.is_loading },
         { "is-disabled": this.is_disabled },
         { "is-outlined": this.isOutlined },
         { "is-fullwidth": this.isFullwidth }
       ];
+      if(this.color){
+        classes.push(`is-${this.color}`);
+      }
       if (!this.noDefaultClass) {
         classes.unshift(this.defaultClass);
       }

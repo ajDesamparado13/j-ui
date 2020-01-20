@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Block from './Block'
 import { use, registerComponentProgrammatic } from '../../utils/plugins'
 
-export { Block }
 const BlockProgrammatic = {
   newComponent (options = {}) {
     const vm = typeof window !== 'undefined' && window.Vue ? window.Vue : Vue
@@ -30,3 +29,4 @@ const Plugin = {
 use(Plugin)
 
 export default Plugin
+export { Block }
