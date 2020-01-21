@@ -25,241 +25,240 @@
 
 <script>
 
-import pickBy from 'lodash/pickBy';
+import pickBy from 'lodash/pickBy'
 export default {
-    name: 'ui-checkbox',
-    inheritAttrs:false,
-    model:{
-        prop:'value',
-        event:'update',
+  name: 'ui-checkbox',
+  inheritAttrs: false,
+  model: {
+    prop: 'value',
+    event: 'update'
+  },
+  props: {
+    isInverse: {
+      type: Boolean,
+      default: false
     },
-    props: {
-        isInverse:{
-            type:Boolean,
-            default:false,
-        },
-        label: String,
-        value: {
-            required: false
-        },
-        trueValue: {
-            default: true
-        },
-        falseValue: {
-            default: false
-        },
-        checked: {
-            type: Boolean,
-            default: false
-        },
-        boxPosition: {
-            type: String,
-            default: 'left' // 'left' or 'right'
-        },
-        color: {
-            type: String,
-            default: 'primary' // 'primary' or 'accent'
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        keyName:{
-            required:false,
-        },
-        submitArray:{
-            type:Boolean,
-            default:false,
-        },
-        submitObject:{
-            type:Boolean,
-            default:false,
-        }
+    label: String,
+    value: {
+      required: false
     },
+    trueValue: {
+      default: true
+    },
+    falseValue: {
+      default: false
+    },
+    checked: {
+      type: Boolean,
+      default: false
+    },
+    boxPosition: {
+      type: String,
+      default: 'left' // 'left' or 'right'
+    },
+    color: {
+      type: String,
+      default: 'primary' // 'primary' or 'accent'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    keyName: {
+      required: false
+    },
+    submitArray: {
+      type: Boolean,
+      default: false
+    },
+    submitObject: {
+      type: Boolean,
+      default: false
+    }
+  },
 
-    data() {
-        return {
-            newValue:false,
-        };
-    },
+  data () {
+    return {
+      newValue: false
+    }
+  },
 
-    computed: {
-        properties(){
-            var exclude = ['value'];
-            return pickBy(this.$attrs,(val,key)=>{
-                return exclude.includes(key);
-            });
-        },
-        valueIndex(){
-            if(!Array.isArray(this.value)){
-                return -1;
-            }
-            return this.value.findIndex((item)=>{
-                return this.looseEqual(item,this.trueValue);
-            })
-        },
-        isChecked:{
-            get(){
-                return this.looseEqual(this.newValue, this.trueValue)
-            },
-            set(flag){
-                this.setValue(flag);
-            },
-        },
-        /*
+  computed: {
+    properties () {
+      var exclude = ['value']
+      return pickBy(this.$attrs, (val, key) => {
+        return exclude.includes(key)
+      })
+    },
+    valueIndex () {
+      if (!Array.isArray(this.value)) {
+        return -1
+      }
+      return this.value.findIndex((item) => {
+        return this.looseEqual(item, this.trueValue)
+      })
+    },
+    isChecked: {
+      get () {
+        return this.looseEqual(this.newValue, this.trueValue)
+      },
+      set (flag) {
+        this.setValue(flag)
+      }
+    },
+    /*
         * Check if value is of object type and not an array
         */
-        isValueObject(){
-          return ( !Array.isArray(this.value) && typeof this.value === 'object' ) ||  this.submitObject
-        },
-        /*
+    isValueObject () {
+      return (!Array.isArray(this.value) && typeof this.value === 'object') || this.submitObject
+    },
+    /*
         * Check if value is of array type
         */
-        isValueArray(){
-            return this.submitArray || Array.isArray(this.value);
-        },
-        /*
+    isValueArray () {
+      return this.submitArray || Array.isArray(this.value)
+    },
+    /*
         * Check if value is of primary type
         */
-        isValuePrimary(){
-          return typeof this.value != 'object'
-        },
-        classes() {
-            return [
-                `ui-checkbox--color-${this.color}`,
-                `ui-checkbox--box-position-${this.boxPosition}`,
-                { 'is-checked': this.isChecked },
-                { 'is-disabled': this.disabled }
-            ];
-        }
+    isValuePrimary () {
+      return typeof this.value !== 'object'
     },
-    watch: {
-        newValue(value){
-            if(value === '' || typeof value === 'undefined' || value === null){
-                return;
-            }
-            this.update()
-        },
-    },
-    created(){
-        /*
+    classes () {
+      return [
+        `ui-checkbox--color-${this.color}`,
+        `ui-checkbox--box-position-${this.boxPosition}`,
+        { 'is-checked': this.isChecked },
+        { 'is-disabled': this.disabled }
+      ]
+    }
+  },
+  watch: {
+    newValue (value) {
+      if (value === '' || typeof value === 'undefined' || value === null) {
+        return
+      }
+      this.update()
+    }
+  },
+  created () {
+    /*
         * if checkbox is checked by default
         * or if checkbox is on inverse mode
         * then set newValue to true by default
         */
-        //if(this.checked || ( this.isInverse && this.valueIndex < 0)){
-        //    this.newValue = this.trueValue;
-        //}
-        /*
+    // if(this.checked || ( this.isInverse && this.valueIndex < 0)){
+    //    this.newValue = this.trueValue;
+    // }
+    /*
         * if value type is not array then update  new value
         * depending on loose equal result of value and true value
         */
-        if(this.isValuePrimary){
-            this.newValue = this.looseEqual(this.value,this.trueValue);
-        }
-    },
-    mounted(){
-        if(this.isValuePrimary){
-            var deep = typeof this.value === 'object';
-            this.$watch('value',this.update,{ deep })
-        }
-    },
-    methods: {
-        /*
+    if (this.isValuePrimary) {
+      this.newValue = this.looseEqual(this.value, this.trueValue)
+    }
+  },
+  mounted () {
+    if (this.isValuePrimary) {
+      var deep = typeof this.value === 'object'
+      this.$watch('value', this.update, { deep })
+    }
+  },
+  methods: {
+    /*
         * clear the checked prop of checkbox!
         */
-        clear(){
-            this.setValue(false);
-        },
-        /*
+    clear () {
+      this.setValue(false)
+    },
+    /*
         * Toggle the checkbox value between true and false values
         */
-        toggleValue(){
-            this.newValue = this.setValue(!this.isChecked)
-        },
-        /*
+    toggleValue () {
+      this.newValue = this.setValue(!this.isChecked)
+    },
+    /*
          * Set the value-prop of checkbox base on passed argument
          * true boolean set value to trueValue
          * false boolean set value to falseValue
          */
-        setValue(flag){
-            if(typeof flag != 'boolean'){
-                flag =  this.looseEqual(flag,this.trueValue);
-            }
-            if(flag != this.isChecked){
-              this.newValue = flag ? this.trueValue : this.falseValue;
-            }
-            return this.newValue;
-        },
-        /*
+    setValue (flag) {
+      if (typeof flag !== 'boolean') {
+        flag = this.looseEqual(flag, this.trueValue)
+      }
+      if (flag != this.isChecked) {
+        this.newValue = flag ? this.trueValue : this.falseValue
+      }
+      return this.newValue
+    },
+    /*
          * Array submit type value-prop update}
          */
-        arrayUpdate(){
-            var list = this.value;
-            var index = this.valueIndex;
-            var checked = this.isInverse ? !this.isChecked : this.isChecked
+    arrayUpdate () {
+      var list = this.value
+      var index = this.valueIndex
+      var checked = this.isInverse ? !this.isChecked : this.isChecked
 
-            if(checked && index < 0){
-                this.$set(list,list.length,this.trueValue);
-            }
+      if (checked && index < 0) {
+        this.$set(list, list.length, this.trueValue)
+      }
 
-            if(!checked && index >= 0){
-                this.$delete(list,this.valueIndex)
-            }
-        },
-        objectUpdate(){
-            var checked = this.isInverse ? !this.isChecked : this.isChecked
-            if(checked){
-              this.value[this.keyName] = this.newValue;
-            }else{
-              delete this.value[this.keyName];
-            }
-        },
-        /*
+      if (!checked && index >= 0) {
+        this.$delete(list, this.valueIndex)
+      }
+    },
+    objectUpdate () {
+      var checked = this.isInverse ? !this.isChecked : this.isChecked
+      if (checked) {
+        this.value[this.keyName] = this.newValue
+      } else {
+        delete this.value[this.keyName]
+      }
+    },
+    /*
          * Non Array submit value-prop update
          */
-        valueUpdate(){
-            if(!this.isValuePrimary || this.looseEqual(this.newValue,this.value)){
-                return;
-            }
-            this.$emit('update',this.newValue);
-        },
-        update(){
-            if(this.isValueArray){
-                return this.arrayUpdate()
-            }
-            if(this.isValueObject){
-              return this.objectUpdate();
-
-            }
-            return this.valueUpdate();
-        },
-        /*
+    valueUpdate () {
+      if (!this.isValuePrimary || this.looseEqual(this.newValue, this.value)) {
+        return
+      }
+      this.$emit('update', this.newValue)
+    },
+    update () {
+      if (this.isValueArray) {
+        return this.arrayUpdate()
+      }
+      if (this.isValueObject) {
+        return this.objectUpdate()
+      }
+      return this.valueUpdate()
+    },
+    /*
          * Check if value is an object type
          */
-        isObject(val){
-            return !Array.isArray(val) && typeof val == 'object'
-        },
-        /*
+    isObject (val) {
+      return !Array.isArray(val) && typeof val === 'object'
+    },
+    /*
          * Loosely Check if value a and b are equal
          */
-        looseEqual(a, b) {
-            // eslint-disable-next-line eqeqeq
-            if(this.isObject(a) && this.isObject(b)){
-                if(this.keyName){
-                    var key = this.keyName
-                    return a[key] == b[key];
-                }
-                return JSON.stringify(a) === JSON.stringify(b)
-            }
-            return a == b
-        },
+    looseEqual (a, b) {
+      // eslint-disable-next-line eqeqeq
+      if (this.isObject(a) && this.isObject(b)) {
+        if (this.keyName) {
+          var key = this.keyName
+          return a[key] == b[key]
+        }
+        return JSON.stringify(a) === JSON.stringify(b)
+      }
+      return a == b
     }
-};
+  }
+}
 </script>
 
 <style lang="scss">
-@import '../../styles/imports';
+@import '../../scss/imports';
 
 $ui-checkbox-border-width           : rem-calc(1px) !default;
 $ui-checkbox-checkmark-width        : rem-calc(2px) !default;
@@ -329,7 +328,6 @@ flex-shrink: 0;
 height: $ui-checkbox-size;
 position: relative;
 width: $ui-checkbox-size;
-
 
 // Checkmark
 &::after {
