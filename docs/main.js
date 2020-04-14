@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import moment from 'moment'
-
 import App from './App'
 
 import routes from './views'
 
 import installer from './core'
-import components from '../src/components'
+import components from '../src'
+
+window.Vue = Vue
 moment.locale('ja')
 
 Vue.config.productionTip = false

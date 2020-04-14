@@ -14,6 +14,7 @@ import Datepicker from './Datepicker'
 import Pagination from './Pagination'
 import Table from './Table'
 
+const prefix = 'docs:'
 export default [
   {
     path: '/docs',
@@ -21,7 +22,7 @@ export default [
     children: [
       {
         path: '',
-        redirect: { name: 'start' }
+        redirect: { name: prefix + 'start' }
       },
       /*
       * INSTALLATION
@@ -29,17 +30,17 @@ export default [
       {
         path: '/start',
         component: Start,
-        name: 'start'
+        name: prefix + 'start'
       },
       {
         path: '/installation',
         component: Installation,
-        name: 'installation'
+        name: prefix + 'installation'
       },
       {
         path: '/customization',
         component: Customization,
-        name: 'customization'
+        name: prefix + 'customization'
       },
       /*
       * Layout and elements
@@ -50,17 +51,17 @@ export default [
       {
         path: '/button',
         component: Button,
-        name: 'button'
+        name: prefix + 'button'
       },
       {
         path: '/pagination',
         component: Pagination,
-        name: 'pagination'
+        name: prefix + 'pagination'
       },
       {
         path: '/table',
         component: Table,
-        name: 'table'
+        name: prefix + 'table'
       },
 
       /*
@@ -69,37 +70,37 @@ export default [
       {
         path: '/autocomplete',
         component: Autocomplete,
-        name: 'autocomplete'
+        name: prefix + 'autocomplete'
       },
       {
         path: '/checkbox',
         component: Checkbox,
-        name: 'checkbox'
+        name: prefix + 'checkbox'
       },
       {
         path: '/textarea',
         component: Textarea,
-        name: 'textarea'
+        name: prefix + 'textarea'
       },
       {
         path: '/select',
         component: Select,
-        name: 'select'
+        name: prefix + 'select'
       },
       {
         path: '/date-picker',
         component: Datepicker,
-        name: 'date-picker'
+        name: prefix + 'date-picker'
       },
       {
         path: '/file-upload',
         component: Fileupload,
-        name: 'file-upload'
+        name: prefix + 'file-upload'
       },
       {
         path: '/textbox',
         component: Textbox,
-        name: 'textbox'
+        name: prefix + 'textbox'
       }
     ]
   }

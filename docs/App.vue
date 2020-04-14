@@ -1,11 +1,11 @@
 <template>
-  <main id="app" class="app-container">
+  <body id="app" class="app-container">
     <router-view class="app-main">
       <layout-header slot="header"></layout-header>
       <layout-footer slot="footer"></layout-footer>
     </router-view>
     <notification-container></notification-container>
-  </main>
+  </body>
 </template>
 
 <script>

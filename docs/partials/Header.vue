@@ -5,26 +5,24 @@
     aria-label="main navigation"
     v-bind="{brand}"
   >
-    <template slot="start">
-      <a class="navbar-item" href="https://bulma.io/">Home</a>
+    <template slot="start"></template>
+    <template slot="end">
+      <div class="navbar-item">
+            <router-link :to="{name:'home'}">Home</router-link>
+      </div>
       <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/">Docs</a>
+        <router-link :to="{name:'docs:start'}">Docs</router-link>
         <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item" href="https://bulma.io/documentation/overview/start/">Overview</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/modifiers/syntax/">Modifiers</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">Columns</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/layout/container/">Layout</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/form/general/">Form</a>
-          <hr class="navbar-divider" />
-          <a class="navbar-item" href="https://bulma.io/documentation/elements/box/">Elements</a>
-          <a
-            class="navbar-item is-active"
-            href="https://bulma.io/documentation/components/breadcrumb/"
-          >Components</a>
+          <router-link :to="{name:'docs:overview'}">Overview</router-link>
+          <router-link :to="{name:'docs:modifiers'}">Modifiers</router-link>
+          <router-link :to="{name:'docs:columns'}">Columns</router-link>
+          <router-link :to="{name:'docs:layout'}">Layout</router-link>
+          <router-link :to="{name:'docs:form'}">Form</router-link>
+          <router-link :to="{name:'docs:elements'}">Elements</router-link>
+          <router-link :to="{name:'docs:breadcrumbs'}">breadcrumbs</router-link>
         </div>
       </div>
-    </template>
-    <template slot="end">
+
       <!-- shown on mobile -->
       <div class="navbar-item">
         <div class="field is-grouped">
@@ -52,15 +50,15 @@
 
 <script>
 export default {
-  name: "layout-header",
-  data() {
+  name: 'layout-header',
+  data () {
     return {
-      brand: {
-        href: "https://github.com/ajDesamparado13/j-ui",
-        src: "./assets/logo.png",
-        alt: "Bulma: Free, open source, & modern CSS framework based on Flexbox"
-      }
-    };
+      // brand: {
+      //  href: 'https://github.com/ajDesamparado13/j-ui',
+      //  src: '../assets/logo.png',
+      //  alt: 'J-UI: Free, open source, and extensible bulma based VUE-JS UI collection'
+      // }
+    }
   }
-};
+}
 </script>
