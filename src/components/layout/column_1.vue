@@ -1,11 +1,11 @@
 <template>
 	<section id="main" class="column-1-layout">
 		<slot name="header">
-			<component
+			<component :is="header.component"
 				v-if="header.component"
-				:is="header.component"
-				ref="header"
+        v-on="header.events"
 				v-bind="header"
+				ref="header"
 				class="layout-header"
 			></component>
 		</slot>
@@ -18,12 +18,12 @@
 			<router-view ref="router-view" v-bind="routerView" class="router-view"></router-view>
 		</section>
 		<slot name="footer">
-			<component
+			<component :is="footer.component"
 				v-if="footer.component"
-				:is="footer.component"
-				ref="footer"
-				class="layout-footer"
+        v-on="footer.events"
 				v-bind="footer"
+				class="layout-footer"
+				ref="footer"
 			></component>
 		</slot>
 	</section>
@@ -32,8 +32,8 @@
 <script>
 import layout from './layout'
 export default {
-	name: "column-1-layout",
-	extends:layout,
+  name: 'column-1-layout',
+  extends: layout
 }
 </script>
 

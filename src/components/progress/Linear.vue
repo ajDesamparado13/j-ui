@@ -71,7 +71,7 @@ export default {
 <style lang="scss">
 $brand-primary-color    : #2196f3;
 $brand-accent-color     : #d500f9;
-$md-grey-700            : #616161;
+$md-grey-700            : #512da8;;
 $ui-progress-linear-height : 4px !default;
 
 .ui-progress-linear {

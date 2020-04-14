@@ -2,13 +2,13 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <slot name="brand">
-      <router-link class="navbar-item" :to="brand.href">
+      <router-link v-if="brand" class="navbar-item" :to="brand.href">
           <img :src="brand.src" :alt="brand.alt" />
       </router-link>
       </slot>
       <a
         v-if="hasBurger"
-        @click.capture="toggle"
+        @click.capture="show=!show"
         role="button"
         class="navbar-burger"
         :class="{'is-active':show}"
@@ -30,15 +30,15 @@
 
 <script>
 export default {
-  name: "ui-navbar",
-  data() {
+  name: 'ui-navbar',
+  data () {
     return {
       show: false
-    };
+    }
   },
   props: {
     brand: {
-      type:Object,
+      type: Object,
       required: false
     },
     hasBurger: {
@@ -46,13 +46,9 @@ export default {
       default: true
     }
   },
-  methods:{
-    toggle(){
-      this.show = !this.show;
-      this.$emit(this.show ? 'show':'false');
-    },
+  methods: {
   }
-};
+}
 </script>
 
 <style lang="scss">

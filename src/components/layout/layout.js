@@ -51,17 +51,14 @@ export default {
     }
   },
   methods: {
-    resizeContent (width = null, height = null) {
-      this.$nextTick(() => {
-        if (this.$refs['header']) {
-          /* eslint-disable-next-line */
-          height = height ? height : this.$refs["header"].$el.clientHeight;
-          /* eslint-disable-next-line */
-          width = width ? width : this.$refs["header"].$el.clientWidth;
-        }
+    resizeContent (event, width = null, height = null) {
+      if (this.$refs['header']) {
+        height = Number(height) > 0 ? height : this.$refs['header'].$el.clientHeight
+        width = Number(width) > 0 ? width : this.$refs['header'].$el.clientWidth
         this.height = height
         this.width = width
-      })
+        this.$bus.emit('window-resize', { event, width, height })
+      }
     }
   },
   mounted () {

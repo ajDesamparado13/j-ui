@@ -11,15 +11,14 @@
   </button>
 </template>
 
-
 <script>
-import config from "../config";
+import config from '../config'
 export default {
-  name: "ui-button",
-  data() {
+  name: 'ui-button',
+  data () {
     return {
       handler_loading: false
-    };
+    }
   },
   props: {
     model: {
@@ -35,7 +34,7 @@ export default {
     },
     color: {
       type: String,
-      default: "primary" // 'default', 'primary', 'accent', 'green', 'orange', or 'red'
+      default: 'primary' // 'default', 'primary', 'accent', 'green', 'orange', or 'red'
     },
     disabled: {
       type: Boolean,
@@ -59,43 +58,43 @@ export default {
     }
   },
   computed: {
-    is_loading() {
-      return this.handler_loading || this.loading;
+    is_loading () {
+      return this.handler_loading || this.loading
     },
-    is_disabled() {
-      return this.is_loading || this.disabled;
+    is_disabled () {
+      return this.is_loading || this.disabled
     },
-    classes() {
+    classes () {
       var classes = [
-        { "is-loading": this.is_loading },
-        { "is-disabled": this.is_disabled },
-        { "is-outlined": this.isOutlined },
-        { "is-fullwidth": this.isFullwidth }
-      ];
-      if(this.color){
-        classes.push(`is-${this.color}`);
+        { 'is-loading': this.is_loading },
+        { 'is-disabled': this.is_disabled },
+        { 'is-outlined': this.isOutlined },
+        { 'is-fullwidth': this.isFullwidth }
+      ]
+      if (this.color) {
+        classes.push(`is-${this.color}`)
       }
       if (!this.noDefaultClass) {
-        classes.unshift(this.defaultClass);
+        classes.unshift(this.defaultClass)
       }
-      return classes;
+      return classes
     }
   },
   methods: {
-    async onClick() {
-      if (typeof this.handler != "function") {
-        return;
+    async onClick () {
+      if (typeof this.handler !== 'function') {
+        return
       }
 
-      this.handler_loading = true;
-      var promise = this.handler(this.model);
+      this.handler_loading = true
+      var promise = this.handler(this.model)
 
-      if (promise && typeof promise.then == "function") {
-        await promise;
+      if (promise && typeof promise.then === 'function') {
+        await promise
       }
 
-      this.handler_loading = false;
+      this.handler_loading = false
     }
   }
-};
+}
 </script>
