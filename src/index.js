@@ -1,4 +1,4 @@
-import * as components from './components'
+import components from './components'
 
 import config, { setOptions } from './utils/config'
 import { registerComponentProgrammatic } from './utils/plugins'
@@ -9,7 +9,10 @@ const UI = {
     setOptions(Object.assign(config, options))
     // Components
     for (let componentKey in components) {
-      Vue.use(components[componentKey])
+      let installer = components[componentKey]
+      if (installer && installer['install']) {
+        Vue.use(installer)
+      }
     }
     // Config component
     const UIProgrammatic = {
