@@ -1,9 +1,10 @@
 <template>
   <div class="ui-pagination">
     <div class="pagination-container">
-        <ui-button class="pagination-item prev-page" type="secondary" @click="prevPage" :disabled="value == 1" >
-          <ui-icon icon="chevron-left" />
-        </ui-button>
+        <component :is="button" class="pagination-item prev-page" type="secondary" @click="prevPage" :disabled="value == 1"
+        >
+          <component :icon="iconLeft" :is="iconComponent" />
+        </component>
         <template v-for="( page,index ) in pages">
           <component :key="`pages-${index}`"
           class="pagination-item"
@@ -12,25 +13,59 @@
           color="primary"
           :disabled="page==value"
           @click="load(page)"
-           :is="!isNaN(Number(page)) > 0 ? 'ui-button' : 'span'">
+           :is="!isNaN(Number(page)) > 0 ? buttonComponent : 'span'">
            {{page}}
           </component>
         </template>
-        <ui-button class="pagination-item next-page"
+        <component
+         class="pagination-item next-page"
           type="secondary"
           @click="nextPage"
           :disabled="disableNextPage || value==total"
+          :is="buttonComponent"
         >
-          <ui-icon icon="chevron-right" />
-        </ui-button>
+          <component :icon="iconRight" :is="iconComponent" />
+        </component>
     </div>
   </div>
 </template>
 
 <script>
+import config from '../config'
 export default {
   name: 'ui-pagination',
   props: {
+    /*
+    * Button component to be used
+    * default: 'ui-button'
+    */
+    buttonComponent: {
+      type: String,
+      default: config.defaultButton.component
+    },
+    /*
+    * Icon component to be used
+    * default: 'ui-icon'
+    */
+    iconComponent: {
+      type: String,
+      default: config.defaultIcon
+
+    },
+    /*
+    * Prop String for icon to be used for previous page button
+    */
+    iconLeft: {
+      type: String,
+      default: config.defaultPagination.iconLeft
+    },
+    /*
+    * Prop String for icon to be used for next page button
+    */
+    iconRight: {
+      type: String,
+      default: config.defaultPagination.iconRight
+    },
     /*
     * Minimum number of pages that results to ellipsis
     */
@@ -69,10 +104,6 @@ export default {
   },
 
   computed: {
-    /*
-    * Create an array of pages to be displayed
-    * Return: Array
-    */
     pages () {
       var ellipsis = '...'
       var pages = this.range(this.startPage, this.endPage)
@@ -103,18 +134,10 @@ export default {
 
       return pages
     },
-    /*
-    * Calculate the end page for pagers
-    * return Integer
-    */
     endPage () {
       var endPage = this.startPage + this.maxPager - 1
       return endPage >= this.total ? this.total : endPage
     },
-    /*
-    * Calculate the start page for pagers
-    * return Integer
-    */
     startPage () {
       var { total, maxPager } = this
       var currentPage = Number(this.value)
@@ -140,32 +163,15 @@ export default {
     }
   },
   methods: {
-    /*
-    *  Create an array from start integer to end integer
-    *  return Array of integers
-    */
     range (start, end) {
       return Array(end - start + 1).fill().map((_, index) => start + index)
     },
-    /*
-    * Toggle loading of next page
-    * return Integer
-    */
     nextPage () {
       return this.load(this.value, 1)
     },
-    /*
-    * Toggle loading of previous page
-    * return Integer
-    */
     prevPage () {
       return this.load(this.value, -1)
     },
-    /*
-    * Update v-model value with selected page
-    * triggers: [ 'input','change' ] events
-    * return Integer
-    */
     load (value, add = 0) {
       var page = value + add
       if (!isNaN(page) && page != this.value && page >= 1 && page <= this.total) {
@@ -177,6 +183,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
 .ui-pagination {
   display: flex;
@@ -198,6 +205,7 @@ export default {
       opacity: initial;
       margin: 0.5rem;
       min-width: 1rem;
+      min-height: 1.3rem;
       &.prev-page,
       &.next-page {
         max-width: 30px;
