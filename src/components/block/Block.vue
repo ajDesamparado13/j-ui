@@ -141,7 +141,7 @@ export default {
     justify-content: center;
     overflow: hidden;
     position: fixed;
-    z-index: $modal-z;
+    z-index: 40;
 
     .block-background{
         bottom: 0;
