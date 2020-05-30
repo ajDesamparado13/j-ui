@@ -1,5 +1,9 @@
 <template>
-  
+<div class="docs-button">
+  THIS IS BUTTON
+
+</div>
+
 </template>
 
 <script>

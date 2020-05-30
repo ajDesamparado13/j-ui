@@ -1,10 +1,11 @@
 import components from './components'
 
-import config, { setOptions } from './utils/config'
-import { registerComponentProgrammatic } from './utils/plugins'
+import config, { setOptions } from './components/config'
+import { registerComponentProgrammatic } from './components/plugins'
 
 const UI = {
   install (Vue, options = {}) {
+    console.log(components)
     // Options
     setOptions(Object.assign(config, options))
     // Components
@@ -14,6 +15,7 @@ const UI = {
         Vue.use(installer)
       }
     }
+    console.log(components)
     // Config component
     const UIProgrammatic = {
       setOptions (options) {

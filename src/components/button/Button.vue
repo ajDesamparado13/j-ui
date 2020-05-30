@@ -24,14 +24,6 @@ export default {
     model: {
       required: false
     },
-    isFullwidth: {
-      type: Boolean,
-      default: false
-    },
-    isOutlined: {
-      type: Boolean,
-      default: false
-    },
     color: {
       type: String,
       default: 'primary' // 'default', 'primary', 'accent', 'green', 'orange', or 'red'
@@ -50,7 +42,7 @@ export default {
     },
     defaultClass: {
       type: String,
-      default: config.defaultButtonClass
+      default: config.defaultButton.class
     },
     noDefaultClass: {
       type: Boolean,
@@ -67,9 +59,7 @@ export default {
     classes () {
       var classes = [
         { 'is-loading': this.is_loading },
-        { 'is-disabled': this.is_disabled },
-        { 'is-outlined': this.isOutlined },
-        { 'is-fullwidth': this.isFullwidth }
+        { 'is-disabled': this.is_disabled }
       ]
       if (this.color) {
         classes.push(`is-${this.color}`)

@@ -16,122 +16,124 @@
     </div>
 </template>
 
-
 <script>
 import ProgressCircular from '../progress/Circular'
 export default {
-    name:'ui-block',
-    data(){
-        return {
-            block_process:'',
-            block_message:'',
-            previous_style:'',
-            width:0,
-            height:0,
-        }
-    },
-    computed:{
-        has_process(){
-            return this.block_process.toString().length > 0
-        },
-        style(){
-            var width = this.width;
-            var height = this.height;
-            if(!width || !height){
-                return "";
-            }
-            return `width:${width}px;height:${height}px`;
-        },
-    },
-    props:{
-        id:{
-          type:String,
-          default:'ui-block',
-        },
-        type:{
-            type:String,
-            default:'indeterminate',
-        },
-        message:{
-            type:String,
-            default:'',
-        },
-        progress:{
-            type:[String,Number],
-            default:"",
-        },
-        loading:{
-            type:Boolean,
-            default:false,
-        },
-        container: HTMLElement,
-    },
-    methods:{
-        removeElement(el) {
-            if (typeof el.remove !== 'undefined') {
-                el.remove()
-            } else {
-                el.parentNode.removeChild(el)
-            }
-        },
-        close(){
-            if(this.container){
-                this.container.style = this.previous_style;
-            }
-            this.$destroy();
-            this.removeElement(this.$el);
-            return null;
-        },
-        setProgress(progress){
-            this.block_process = progress;
-        },
-        setMessage(message){
-            this.block_message = message;
-        },
-        updateStyle(){
-            this.width = this.container.clientWidth;
-            this.height = this.container.clientHeight;
-        },
-        mountToBody(){
-            this.$el.style['position'] = "fixed";
-            document.body.appendChild(this.$el);
-        },
-        mountToContainer(){
-            this.$el.style['position'] = "absolute";
-            this.previous_style = this.container.style;
-            this.container.insertBefore(this.$el,this.container.firstChild)
-            this.container.style['position'] = "relative";
-            this.updateStyle();
-        },
-    },
-    beforeMount(){
-        if (!this.container) {
-            this.mountToBody();
-        } else {
-            this.mountToContainer();
-        }
-    },
-    mounted(){
-        if (!this.container) {
-            this.$el.style['position'] = "fixed";
-        } else {
-            this.$el.style['position'] = "absolute";
-        }
-    },
-    created(){
-        this.block_process = this.progress
-        this.block_message = this.message
-    },
-    components:{
-        'ui-progress-circular':ProgressCircular,
+  name: 'ui-block',
+  data () {
+    return {
+      block_process: '',
+      block_message: '',
+      previous_style: '',
+      width: 0,
+      height: 0
     }
+  },
+  computed: {
+    has_process () {
+      return this.block_process.toString().length > 0
+    },
+    style () {
+      var width = this.width
+      var height = this.height
+      if (!width || !height) {
+        return ''
+      }
+      return `width:${width}px;height:${height}px`
+    }
+  },
+  props: {
+    id: {
+      type: String,
+      default: 'ui-block'
+    },
+    type: {
+      type: String,
+      default: 'indeterminate'
+    },
+    message: {
+      type: String,
+      default: ''
+    },
+    progress: {
+      type: [String, Number],
+      default: ''
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    container: HTMLElement
+  },
+  methods: {
+    removeElement (el) {
+      if (typeof el.remove !== 'undefined') {
+        el.remove()
+      } else {
+        el.parentNode.removeChild(el)
+      }
+    },
+    close () {
+      if (this.container) {
+        this.container.style = this.previous_style
+      }
+      this.$destroy()
+      this.removeElement(this.$el)
+      return null
+    },
+    setProgress (progress) {
+      this.block_process = progress
+    },
+    setMessage (message) {
+      this.block_message = message
+    },
+    updateStyle () {
+      this.width = this.container.clientWidth
+      this.height = this.container.clientHeight
+    },
+    mountToBody () {
+      this.$el.style['position'] = 'fixed'
+      document.body.appendChild(this.$el)
+    },
+    mountToContainer () {
+      this.$el.style['position'] = 'absolute'
+      this.previous_style = this.container.style
+      this.container.insertBefore(this.$el, this.container.firstChild)
+      this.container.style['position'] = 'relative'
+      this.updateStyle()
+    }
+  },
+  beforeMount () {
+    if (!this.container) {
+      this.mountToBody()
+    } else {
+      this.mountToContainer()
+    }
+  },
+  mounted () {
+    if (!this.container) {
+      this.$el.style['position'] = 'fixed'
+    } else {
+      this.$el.style['position'] = 'absolute'
+    }
+  },
+  created () {
+    this.block_process = this.progress
+    this.block_message = this.message
+  },
+  components: {
+    'ui-progress-circular': ProgressCircular
+  }
 }
 </script>
 
-
 <style lang="scss">
 .ui-block{
-    @include overlay(0);
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
     overflow: hidden;
     align-items: center;
     display: flex;
@@ -142,8 +144,12 @@ export default {
     z-index: $modal-z;
 
     .block-background{
-        @include overlay(0);
-        background-color: $modal-background-background-color;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background-color: rgba(10, 10, 10, 0.86) ;
     }
     .block-content{
         display:flex;

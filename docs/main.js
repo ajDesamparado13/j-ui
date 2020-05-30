@@ -2,7 +2,7 @@ import Vue from 'vue'
 import moment from 'moment'
 import App from './App'
 
-import routes from './views'
+import routes from './pages'
 
 import installer from './core'
 import components from '../src'

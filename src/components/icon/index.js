@@ -1,6 +1,6 @@
 import Icon from './Icon'
 
-import { use, registerComponent } from '../../utils/plugins'
+import { use, registerComponent } from '../plugins'
 
 const Plugin = {
   install (Vue) {

@@ -17,7 +17,7 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve ./docs/main.js",
-    "build": "vue-cli-service build --target lib --name j-ui ./src/index.js",
+    "build": "vue-cli-service build --target wc --name ui 'src/components/**/*.vue'",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

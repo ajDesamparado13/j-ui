@@ -9,7 +9,10 @@ export const registerComponent = (Vue, component) => {
 }
 
 export const registerComponentProgrammatic = (Vue, property, component) => {
-  let name = `$${property}`;
-  if (!Vue.prototype[name]) Vue.prototype[name]= {}
+  let name = `$${property}`
+  if (Vue.prototype[name]) {
+    console.error(`Vue already contains the prototype ${name}`)
+    return
+  }
   Vue.prototype[name] = component
 }

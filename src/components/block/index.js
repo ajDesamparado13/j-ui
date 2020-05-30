@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Block from './Block'
-import { use, registerComponentProgrammatic } from '../../utils/plugins'
+import { use, registerComponentProgrammatic, registerComponent } from '../plugins'
 
 const BlockProgrammatic = {
   newComponent (options = {}) {
@@ -22,11 +22,11 @@ const BlockProgrammatic = {
 }
 const Plugin = {
   install (Vue) {
+    registerComponent(Vue, Block)
     registerComponentProgrammatic(Vue, 'block', BlockProgrammatic)
   }
 
 }
-use(Plugin)
 
 export default Plugin
 export { Block }

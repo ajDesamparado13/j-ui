@@ -1,6 +1,10 @@
+
+/*
+* AUTO ADD ALL COMPONENTS THRU index.js
+*/
 const components = {}
 
-;(function getComponents () {
+ ;(function getComponents () {
   const mods = require.context('', true, /index\.js$/)
   mods.keys().forEach(fileName => {
     if (fileName === './index.js') {
