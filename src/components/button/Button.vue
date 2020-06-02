@@ -7,7 +7,8 @@
     :disabled="is_disabled"
     :class="classes"
   >
-    <slot></slot>
+    <span v-if="is_loading && loadingText">{{ loadingText }}</span>
+    <slot v-else></slot>
   </button>
 </template>
 
@@ -21,6 +22,10 @@ export default {
     }
   },
   props: {
+    loadingText: {
+      type: String,
+      required: false
+    },
     model: {
       required: false
     },
