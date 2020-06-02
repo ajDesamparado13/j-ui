@@ -27,7 +27,7 @@ export default {
       previous_style: '',
       width: 0,
       height: 0,
-      hiddenElement:null
+      hiddenElement: null
     }
   },
   computed: {
@@ -43,7 +43,7 @@ export default {
       return `width:${width}px;height:${height}px`
     }
   },
-  props : {
+  props: {
     id: {
       type: String,
       default: 'ui-block'
@@ -58,24 +58,24 @@ export default {
     },
     progress: {
       type: [String, Number],
-      default:''
+      default: ''
     },
     loading: {
       type: Boolean,
       default: false
     },
     container: {
-        type:[ HTMLElement,Object ],
-        required:false,
-        default:null
+      type: [ HTMLElement, Object ],
+      required: false,
+      default: null
     },
-    hide:{
-        type:Boolean,
-        default:false,
+    hide: {
+      type: Boolean,
+      default: false
     },
-    overlay:{
-        type:Boolean,
-        default:true,
+    overlay: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
@@ -86,21 +86,21 @@ export default {
         el.parentNode.removeChild(el)
       }
     },
-    setVisible(){
-        if(this.hide && this.hiddenElement){
-            this.hiddenElement.style.visibility = '';
-            this.hiddenElement = null
-            this.container.firstChild.style.visibility = '';
-        }
+    setVisible () {
+      if (this.hide && this.hiddenElement) {
+        this.hiddenElement.style.visibility = ''
+        this.hiddenElement = null
+        this.container.firstChild.style.visibility = ''
+      }
     },
-    setHidden(){
-        if(this.hide){
-            this.hiddenElement = this.container.firstChild
-            this.hiddenElement.style.visibility = 'hidden';
-        }
+    setHidden () {
+      if (this.hide) {
+        this.hiddenElement = this.container.firstChild
+        this.hiddenElement.style.visibility = 'hidden'
+      }
     },
     close () {
-      this.setVisible();
+      this.setVisible()
       if (this.container) {
         this.container.style = this.previous_style
       }
@@ -123,27 +123,31 @@ export default {
       document.body.appendChild(this.$el)
     },
     mountToContainer () {
-      let container = this.container;
-      if(container._isVue){
-          this.container = container.$el
+      let container = this.container
+      if (container._isVue) {
+        this.container = container.$el
       }
       this.$el.style['position'] = 'absolute'
       this.previous_style = this.container.style
-      this.setHidden();
+      this.setHidden()
       this.container.insertBefore(this.$el, this.container.firstChild)
       this.container.style['position'] = 'relative'
       this.updateStyle()
     }
   },
   beforeMount () {
-    let container = this.container;
-    if(container._isVue){
+    if (!this.container) {
+      this.mountToBody()
+      return
+    }
+    let container = this.container
+    if (container._isVue) {
       container.$on('hook:mounted', this.mountToContainer)
       return
     }
-    if(container instanceof HTMLElement){
-        this.mountToContainer()
-        return;
+    if (container instanceof HTMLElement) {
+      this.mountToContainer()
+      return
     }
     this.mountToBody()
   },
