@@ -8,11 +8,12 @@ const BlockProgrammatic = {
     const BlockComponent = vm.extend(Block)
     return new BlockComponent(options)
   },
-  show (props = {}) {
-    var propsData = {
-      message: props.message ? props.message : '',
-      type: props.type ? props.type : 'indeterminate',
-      container: props.container ? props.container : null
+  show (params = {}) {
+    let props = Block.props;
+    let propsData = {}
+    for(let key in props){
+        let prop = props[key];
+        propsData[key] =  typeof params[key] == 'undefined' ? prop.default : params[key]
     }
     return this.newComponent({
       el: document.createElement('div'),

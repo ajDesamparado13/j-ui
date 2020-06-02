@@ -1,6 +1,6 @@
 <template>
     <div class="ui-block block" v-bind="{id}">
-        <div class="block-background"> </div>
+        <div class="block-background" :class="{ 'is-overlay' :overlay }"> </div>
         <div class="block-content">
             <ui-progress-circular
                 :size="48"
@@ -26,7 +26,8 @@ export default {
       block_message: '',
       previous_style: '',
       width: 0,
-      height: 0
+      height: 0,
+      hiddenElement:null
     }
   },
   computed: {
@@ -42,7 +43,7 @@ export default {
       return `width:${width}px;height:${height}px`
     }
   },
-  props: {
+  props : {
     id: {
       type: String,
       default: 'ui-block'
@@ -57,13 +58,25 @@ export default {
     },
     progress: {
       type: [String, Number],
-      default: ''
+      default:''
     },
     loading: {
       type: Boolean,
       default: false
     },
-    container: HTMLElement
+    container: {
+        type:[ HTMLElement,Object ],
+        required:false,
+        default:null
+    },
+    hide:{
+        type:Boolean,
+        default:false,
+    },
+    overlay:{
+        type:Boolean,
+        default:true,
+    }
   },
   methods: {
     removeElement (el) {
@@ -73,7 +86,21 @@ export default {
         el.parentNode.removeChild(el)
       }
     },
+    setVisible(){
+        if(this.hide && this.hiddenElement){
+            this.hiddenElement.style.visibility = '';
+            this.hiddenElement = null
+            this.container.firstChild.style.visibility = '';
+        }
+    },
+    setHidden(){
+        if(this.hide){
+            this.hiddenElement = this.container.firstChild
+            this.hiddenElement.style.visibility = 'hidden';
+        }
+    },
     close () {
+      this.setVisible();
       if (this.container) {
         this.container.style = this.previous_style
       }
@@ -96,19 +123,29 @@ export default {
       document.body.appendChild(this.$el)
     },
     mountToContainer () {
+      let container = this.container;
+      if(container._isVue){
+          this.container = container.$el
+      }
       this.$el.style['position'] = 'absolute'
       this.previous_style = this.container.style
+      this.setHidden();
       this.container.insertBefore(this.$el, this.container.firstChild)
       this.container.style['position'] = 'relative'
       this.updateStyle()
     }
   },
   beforeMount () {
-    if (!this.container) {
-      this.mountToBody()
-    } else {
-      this.mountToContainer()
+    let container = this.container;
+    if(container._isVue){
+      container.$on('hook:mounted', this.mountToContainer)
+      return
     }
+    if(container instanceof HTMLElement){
+        this.mountToContainer()
+        return;
+    }
+    this.mountToBody()
   },
   mounted () {
     if (!this.container) {
@@ -143,13 +180,15 @@ export default {
     position: fixed;
     z-index: 40;
 
+    .is-overlay{
+        background-color: rgba(10, 10, 10, 0.86) ;
+    }
     .block-background{
         bottom: 0;
         left: 0;
         position: absolute;
         right: 0;
         top: 0;
-        background-color: rgba(10, 10, 10, 0.86) ;
     }
     .block-content{
         display:flex;
