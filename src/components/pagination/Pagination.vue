@@ -1,7 +1,7 @@
 <template>
   <div class="ui-pagination">
     <div class="pagination-container">
-        <component :is="button" class="pagination-item prev-page" type="secondary" @click="prevPage" :disabled="value == 1"
+        <component :is="buttonComponent" class="pagination-item prev-page" type="secondary" @click="prevPage" :disabled="value == 1"
         >
           <component :icon="iconLeft" :is="iconComponent" />
         </component>
