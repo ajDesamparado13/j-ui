@@ -19,17 +19,16 @@
     </div>
 </template>
 
-
 <script>
 export default {
-    name:'ui-field-group',
-    props:{
-        required: { type: Boolean, default: false },
-        requiredText: { type: String, default: 'required' },
-        label:{ type:String, default:'', },
-        labelPosition:{ type:String, default:'top', },
-        isHorizontal:{ type:Boolean, default:true, }
-    },
+  name: 'ui-field-group',
+  props: {
+    required: { type: Boolean, default: false },
+    requiredText: { type: String, default: 'required' },
+    label: { type: String, default: '' },
+    labelPosition: { type: String, default: 'top' },
+    isHorizontal: { type: Boolean, default: true }
+  }
 }
 </script>
 

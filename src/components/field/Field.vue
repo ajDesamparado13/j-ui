@@ -41,85 +41,84 @@
 
 <script>
 export default {
-    name:'ui-field',
-    data(){
-        return {
-            isFocused:false,
-            isTouched:false,
+  name: 'ui-field',
+  data () {
+    return {
+      isFocused: false,
+      isTouched: false
+    }
+  },
+  props: {
+    forCheckbox: { type: Boolean, default: false },
+    isHorizontal: { type: Boolean, default: false },
+    message: { type: String, default: '' },
+    hasMessage: { type: Boolean, default: false },
+    requiredText: { type: String, default: 'required' },
+    required: { type: Boolean, default: false },
+    label: { type: String, default: '' },
+    extraText: { type: String, default: '' },
+    labelPosition: { type: String, default: 'top' },
+    name: { type: String, default: '' },
+    disabled: { type: Boolean, default: false },
+    invalid: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false }
+  },
+  computed: {
+    status () {
+      return this.invalid ? 'is-danger' : 'is-primary'
+    },
+    isDisabled () {
+      return this.disabled || this.loading
+    },
+    classes () {
+      var classes = {
+        'for-checkbox': this.forCheckbox,
+        'is-active': this.isActive,
+        'is-horizontal': this.isHorizontal,
+        'is-touched': this.isTouched,
+        'is-invalid': this.invalid,
+        'is-disabled': this.isDisabled
+      }
+      classes[`label-${this.labelPosition}`] = true
+      return classes
+    },
+    isActive () {
+      return this.isFocused && !this.invalid
+    },
+    hasExtra () {
+      return this.$slots['extra'] || this.extraText
+    }
+  },
+  methods: {
+    clear () {
+      this.$children.forEach((child) => {
+        if (typeof child.clear === 'function') {
+          child.clear()
         }
+      })
     },
-    props:{
-        forCheckbox:{type:Boolean,default:false, },
-        isHorizontal:{type:Boolean,default:false,},
-        message:{ type:String,default:'' },
-        hasMessage:{ type:Boolean, default:false, },
-        requiredText: { type: String, default: 'required' },
-        required: { type: Boolean, default: false },
-        label:{ type:String,default:'' },
-        extraText:{ type:String,default:'' },
-        labelPosition:{ type:String, default:'top',/* top, left, right*/ },
-        name: { type:String,default:'', },
-        disabled: { type: Boolean, default: false },
-        invalid:{ type:Boolean, default:false, },
-        loading: { type:Boolean,default:false, },
+    onFocus (event) {
+      if (this.forCheckbox) {
+        return
+      }
+      this.isFocused = true
+      this.$emit('field-focus', event)
     },
-    computed:{
-        status(){
-            return this.invalid?'is-danger':'is-primary'
-        },
-        isDisabled(){
-            return this.disabled || this.loading;
-        },
-        classes(){
-            var classes = {
-               'for-checkbox' : this.forCheckbox,
-               'is-active' : this.isActive,
-               'is-horizontal':this.isHorizontal,
-               'is-touched': this.isTouched,
-               'is-invalid': this.invalid,
-               'is-disabled': this.isDisabled
-            }
-            classes[`label-${this.labelPosition}`] = true
-            return classes;
-        },
-        isActive(){
-            return this.isFocused && !this.invalid
-        },
-        hasExtra(){
-            return this.$slots['extra'] || this.extraText;
-        }
-    },
-    methods:{
-        clear(){
-            this.$children.forEach((child)=>{
-                if(typeof child.clear == 'function'){
-                    child.clear();
-                }
-            })
-        },
-        onFocus(event){
-            if(this.forCheckbox){
-                return;
-            }
-            this.isFocused = true;
-            this.$emit('field-focus',event);
-        },
-        onBlur(event){
-            if(this.forCheckbox){
-                return;
-            }
-            this.isFocused = false;
-            if (!this.isTouched) {
-                this.isTouched = true;
-                this.$emit('field-touched');
-                //this.$parent.$emit('touch');
-            }
-            this.$emit('field-blur',event);
-        }
-    },
+    onBlur (event) {
+      if (this.forCheckbox) {
+        return
+      }
+      this.isFocused = false
+      if (!this.isTouched) {
+        this.isTouched = true
+        this.$emit('field-touched')
+        // this.$parent.$emit('touch');
+      }
+      this.$emit('field-blur', event)
+    }
+  }
 }
 </script>
-
 
 <style lang="scss">
 // ================================================

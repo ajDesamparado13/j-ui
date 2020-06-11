@@ -51,86 +51,88 @@
 <script>
 import BaseForm from '../BaseForm'
 import BaseUI from '../BaseUI'
-import Control from '../control'
+import Control from '../control/Control'
 import Area from './Area'
 import Input from './Input'
+import Field from '../field/Field'
 
 export default {
-    extends:BaseUI,
-    name:'ui-textbox',
-    model:{
-        prop:'value',
-        event:'update',
+  extends: BaseUI,
+  name: 'ui-textbox',
+  model: {
+    prop: 'value',
+    event: 'update'
+  },
+  data () {
+    return {
+      initialValue: this.value,
+      newValue: ''
+    }
+  },
+  props: {
+    prefix: { type: String, default: '' },
+    divider: { type: Number, default: 1 },
+    multiplier: { type: Number, default: 1 },
+    value: {
+      type: [String, Number, Array],
+      default: ''
     },
-    data() {
-        return {
-            initialValue: this.value,
-            newValue:'',
-        };
+    type: {
+      type: String,
+      default: 'text' // all the possible HTML5 input types, except those that have a special UI
     },
-    props: {
-        prefix:{ type:String,default:'' },
-        divider:{ type:Number, default:1, },
-        multiplier:{ type:Number, default:1, },
-        value: {
-            type: [String, Number,Array],
-            default: ''
-        },
-        type: {
-            type: String,
-            default: 'text' // all the possible HTML5 input types, except those that have a special UI
-        },
-        autocomplete: String,
-        autofocus: {
-            type: Boolean,
-            default: false
-        },
-        maxlength: Number,
-        enforceMaxlength: {
-            type: Boolean,
-            default: false
-        },
-        isFullwidth:{
-            type:Boolean,
-            default:false,
-        },
+    autocomplete: String,
+    autofocus: {
+      type: Boolean,
+      default: false
     },
-    computed:{
-        valueLength() {
-            return this.value ? this.value.length : 0;
-        },
+    maxlength: Number,
+    enforceMaxlength: {
+      type: Boolean,
+      default: false
     },
-    methods:{
-        clear() {
-            this.$refs['input'].clear();
-        },
-        getNewValue(){
-            return this.newValue;
-        },
-        reset() {
-            this.$refs['input'].reset();
-        },
-        focus(){
-            this.$el.querySelector(this.type == 'textarea' ? 'textarea' : 'input').focus();
-        },
+    isFullwidth: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    valueLength () {
+      return this.value ? this.value.length : 0
+    }
+  },
+  methods: {
+    clear () {
+      this.$refs['input'].clear()
     },
-    watch:{
-        value:{
-            immediate:true,
-            handler(value){
-                this.newValue = value;
-            }
-        },
-        newValue(value) {
-            this.$emit('input',value);
-        },
+    getNewValue () {
+      return this.newValue
+    },
+    reset () {
+      this.$refs['input'].reset()
+    },
+    focus () {
+      this.$el.querySelector(this.type == 'textarea' ? 'textarea' : 'input').focus()
+    }
+  },
+  watch: {
+    value: {
+      immediate: true,
+      handler (value) {
+        this.newValue = value
+      }
+    },
+    newValue (value) {
+      this.$emit('input', value)
+    }
 
-    },
-    mixins:[BaseForm],
-    components: {
-        "ui-control": Control,
-        "ui-input": Input,
-        "ui-textarea": Area,
-    },
-};
+  },
+  mixins: [BaseForm],
+  components: {
+    'ui-field': Field,
+    'ui-control': Control,
+    'ui-input': Input,
+    'ui-textarea': Area
+  }
+}
 </script>

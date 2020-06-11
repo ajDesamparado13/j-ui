@@ -2,7 +2,7 @@ import Input from './Input'
 import Textbox from './Textbox'
 import Textarea from './Area'
 
-import { use, registerComponent } from '../../utils/plugins'
+import { use, registerComponent } from '../plugins'
 
 export {
   Input,
