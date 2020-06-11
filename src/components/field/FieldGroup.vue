@@ -31,17 +31,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.ui-field-group{
-    display:flex;
-    flex-direction:column;
-    .field-body{
-        flex-grow:1;
-        .label{
-            color:initial;
-            font-weight:initial;
-        }
-    }
-}
-</style>
