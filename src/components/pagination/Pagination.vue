@@ -49,7 +49,7 @@ export default {
     */
     iconComponent: {
       type: String,
-      default: config.defaultIcon
+      default: config.defaultIcon.component
 
     },
     /*
