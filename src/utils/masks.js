@@ -4,17 +4,16 @@
 */
 const only = {
   date_keys (event) {
-    if (Vue.masks.only.is_special_key(event)) {
+    if (this.is_special_key(event)) {
       return
     }
     var key = event.which || event.keyCode || event.charCode
-    if (Vue.masks.only.is_number_key(event) || key == 191) {
+    if (this.is_number_key(event) || key == 191) {
       return
     }
     event.preventDefault()
   },
   password_keys (event, options = {}) {
-    var value = event.target.value
     var key = event.which || event.keyCode || event.charCode
     var trap = [32]
     if (trap.includes(key)) {
@@ -31,10 +30,10 @@ const only = {
       return event.preventDefault()
     }
 
-    if (Vue.masks.only.is_special_key(event)) {
+    if (this.is_special_key(event)) {
       return
     }
-    if (Vue.masks.only.is_number_key(event) || key == 188) {
+    if (this.is_number_key(event) || key == 188) {
       return
     }
     event.preventDefault()
@@ -46,14 +45,14 @@ const only = {
     }, options)
     var value = event.target.value
     var key = event.which || event.keyCode || event.charCode
-    if ((key === 190 && value.toString().indexOf('.') >= 0) || (key === 189 && (value.toString().indexOf('-') >= 0 || type != 'signed'))) {
+    if ((key === 190 && value.toString().indexOf('.') >= 0) || (key === 189 && (value.toString().indexOf('-') >= 0 || type !== 'signed'))) {
       return event.preventDefault()
     }
 
-    if (Vue.masks.only.is_number_key(event) ||
-         key == 188 ||
-         key == 190 ||
-         Vue.masks.only.is_special_key(event)) {
+    if (this.is_number_key(event) ||
+         key === 188 ||
+         key === 190 ||
+         this.is_special_key(event)) {
       return
     }
 
@@ -65,7 +64,7 @@ const only = {
      */
   is_number_key (event) {
     var key = event.which || event.keyCode || event.charCode
-    if (key == 189 || (event.shiftKey === false && key > 47 && key < 60) || !isNaN(Number(event.key))) {
+    if (key === -189 || (event.shiftKey === false && key > 47 && key < 60) || !isNaN(Number(event.key))) {
       return true
     }
     return false
@@ -75,22 +74,22 @@ const only = {
      * returns Boolean
      */
   is_special_key (event) {
-    var allowable_is_special_key = [8, 35, 36, 37, 38, 39, 40, 46, 9, 27, 13, 110, 116, 115]
+    var allowableSpecialkey = [8, 35, 36, 37, 38, 39, 40, 46, 9, 27, 13, 110, 116, 115]
     var key = event.which || event.keyCode || event.charCode
-    var is_special = allowable_is_special_key.includes(key)
+    var isSpecial = allowableSpecialkey.includes(key)
     // if ctrl+a or alt+a is down do not prevent
-    var is_special_a = key === 65 && (event.ctrlKey === true || event.metaKey === true)
+    var isSpecialA = key === 65 && (event.ctrlKey === true || event.metaKey === true)
     // if meta+shift+a or alt+a is down do not prevent
-    var is_special_r = key === 82 && (event.shiftKey === true || event.metaKey === true)
-    if (is_special || is_special_a || is_special_r) {
+    var isSpecialR = key === 82 && (event.shiftKey === true || event.metaKey === true)
+    if (isSpecial || isSpecialA || isSpecialR) {
       return true
     }
     return false
   },
   is_enter_key (event) {
     var key = event.which || event.keyCode || event.charCode
-    var allowable_enter_key = [13]
-    if (allowable_enter_key.includes(key)) {
+    var allowableEnterKey = [13]
+    if (allowableEnterKey.includes(key)) {
       return true
     }
     return false
