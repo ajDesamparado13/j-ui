@@ -1,0 +1,28 @@
+.ui-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    span.pagination-item {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    button.pagination-item {
+      opacity: initial;
+      margin: 0.5rem;
+      min-width: 1rem;
+      min-height: 1.3rem;
+      &.prev-page,
+      &.next-page {
+        max-width: 30px;
+      }
+    }
+  }
+}
