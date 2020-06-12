@@ -3,10 +3,75 @@
  * ALL FORMAT METHODS SHOULD RETURN IN STRING VALUE
  * */
 import dateUtil from './date'
+// let charsets = {
+//  latin: { halfRE: /[!-~]/g, fullRE: /[！-～]/g, delta: 0xFEE0 },
+//  hangul1: { halfRE: /[ﾡ-ﾾ]/g, fullRE: /[ᆨ-ᇂ]/g, delta: -0xEDF9 },
+//  hangul2: { halfRE: /[ￂ-ￜ]/g, fullRE: /[ᅡ-ᅵ]/g, delta: -0xEE61 },
+//  kana: { delta: 0,
+//    half: '｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ',
+//    full: '。「」、・ヲァィゥェォャュョッーアイウエオカキクケコサシ' +
+//                'スセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン゛゜' },
+//  extras: { delta: 0,
+//    half: '¢£¬¯¦¥₩\u0020|←↑→↓■°',
+//    full: '￠￡￢￣￤￥￦\u3000￨￩￪￫￬￭￮' }
+// }
+//
+// let toFull = (set) => {
+//  if (set.delta) {
+//    return String.fromCharCode(c.charCodeAt(0) + set.delta)
+//  }
+//  return [...set.full][[...set.half].indexOf(c)]
+// }
+//
+// let set ( c ) => {
+//    return String.fromCharCode(c.charCodeAt(0) + set.delta)
+// }
+//
+// let re = (set, way) => {
+//  set[ way + 'RE' ] || new RegExp('[' + set[way] + ']', 'g')
+// }
+//
+// let sets = Object.keys(charsets).map(i => charsets[i])
+
+//  let charsets = {
+//    latin: { halfRE: /[!-~]/g, fullRE: /[！-～]/g, delta: 0xFEE0 },
+//    hangul1: { halfRE: /[ﾡ-ﾾ]/g, fullRE: /[ᆨ-ᇂ]/g, delta: -0xEDF9 },
+//    hangul2: { halfRE: /[ￂ-ￜ]/g, fullRE: /[ᅡ-ᅵ]/g, delta: -0xEE61 },
+//    kana: { delta: 0,
+//      half: '｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ',
+//      full: '。「」、・ヲァィゥェォャュョッーアイウエオカキクケコサシ' +
+//                'スセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン゛゜' },
+//    extras: { delta: 0,
+//      half: '¢£¬¯¦¥₩\u0020|←↑→↓■°',
+//      full: '￠￡￢￣￤￥￦\u3000￨￩￪￫￬￭￮' }
+//  }
+
+//  let toFull = set => c => set.delta
+//    ? String.fromCharCode(c.charCodeAt(0) + set.delta)
+//    : [...set.full][[...set.half].indexOf(c)]
+
+//  let toHalf = set => c => set.delta
+//    ? String.fromCharCode(c.charCodeAt(0) - set.delta)
+//    : [...set.half][[...set.full].indexOf(c)]
+
+//  let sets = Object.keys(charsets).map(i => charsets[i])
+
+//  window.toFullWidth = str0 =>
+//    sets.reduce((str, set) => str.replace(re(set, 'half'), toFull(set)), str0)
+
+//  window.toHalfWidth = str0 =>d
+//    sets.reduce((str, set) => str.replace(re(set, 'full'), toHalf(set)), str0)
+
 export default {
   template: {
     percentage: '%',
     currency: ''
+  },
+  toHalfWidth (value, set = 'kana') {
+    value = value.toString()
+    return value.replace(/[\uff01-\uff5e]/g, (s) => {
+      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)
+    }).replace(/\u3000/g, '\u0020')
   },
   getObjectParameters (param, addon) {
     var parameters = param.split('|')
@@ -34,12 +99,6 @@ export default {
   },
   setLocale (locale) {
     return 'ja'
-  },
-  toHalfWidth (value) {
-    value = value.toString()
-    return value.replace(/[\uff01-\uff5e]/g, (s) => {
-      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)
-    })
   },
   isEmpty (a, format = 'text') {
     var ret = false
@@ -72,7 +131,6 @@ export default {
     if (this.isEmpty(value, type)) {
       return value
     }
-    var formatter = null
     switch (type) {
       case 'integer':
       case 'number':
@@ -99,7 +157,7 @@ export default {
     if (typeof options.fromString !== 'undefined') {
       return dateUtil.fromString(value, options)
     }
-    return dateUtil.format(value, format)
+    return dateUtil.format(value)
   },
   formatPercentage (value, { multiplier = 1, precision = 2, symbol = '%' }) {
     if (value == '-') {
@@ -128,22 +186,22 @@ export default {
       }
       point = '.' + point
     }
-    var new_val = `${number}${point}`
-    if (value[0] == '-' && new_val[0] != '-') {
-      new_val = '-' + new_val
+    var newVal = `${number}${point}`
+    if (value[0] === '-' && newVal[0] !== '-') {
+      newVal = '-' + newVal
     }
-    new_val = parseFloat(new_val) * multiplier
+    newVal = parseFloat(newVal) * multiplier
     if (!stringify) {
-      return new_val
+      return newVal
     }
-    if (this.isEmpty(new_val)) {
+    if (this.isEmpty(newVal)) {
       return ''
     }
-    new_val = new_val.toLocaleString('en')
+    newVal = newVal.toLocaleString('en')
     if (point == '.' && value.indexOf('.') >= 0) {
-      new_val = new_val + '.'
+      newVal = newVal + '.'
     }
-    return new_val
+    return newVal
   },
   formatCurrency (value, { currency = '$' }) {
     var number = this.getNumber(value)

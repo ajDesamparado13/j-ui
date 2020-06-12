@@ -4,17 +4,17 @@
 */
 const only = {
   date_keys (event) {
-    if (this.is_special_key(event)) {
+    var key = this.getKey(event)
+    if (this.is_special_key(key)) {
       return
     }
-    var key = event.which || event.keyCode || event.charCode
     if (this.is_number_key(event) || key == 191) {
       return
     }
     event.preventDefault()
   },
   password_keys (event, options = {}) {
-    var key = event.which || event.keyCode || event.charCode
+    var key = this.getKey(event)
     var trap = [32]
     if (trap.includes(key)) {
       return event.preventDefault()
@@ -25,15 +25,15 @@ const only = {
       type: 'signed'
     }, options)
     var value = event.target.value
-    var key = event.which || event.keyCode || event.charCode
-    if (key === 189 && (value.toString().indexOf('-') >= 0 || type != 'signed')) {
+    var key = this.getKey(event)
+    if (key === 189 && (value.toString().indexOf('-') >= 0 || type !== 'signed')) {
       return event.preventDefault()
     }
 
-    if (this.is_special_key(event)) {
+    if (this.is_special_key(key)) {
       return
     }
-    if (this.is_number_key(event) || key == 188) {
+    if (this.is_number_key(event) || key === 188) {
       return
     }
     event.preventDefault()
@@ -44,7 +44,7 @@ const only = {
 
     }, options)
     var value = event.target.value
-    var key = event.which || event.keyCode || event.charCode
+    var key = this.getKey(event)
     if ((key === 190 && value.toString().indexOf('.') >= 0) || (key === 189 && (value.toString().indexOf('-') >= 0 || type !== 'signed'))) {
       return event.preventDefault()
     }
@@ -52,7 +52,7 @@ const only = {
     if (this.is_number_key(event) ||
          key === 188 ||
          key === 190 ||
-         this.is_special_key(event)) {
+         this.is_special_key(key)) {
       return
     }
 
@@ -63,7 +63,7 @@ const only = {
      * returns Boolean
      */
   is_number_key (event) {
-    var key = event.which || event.keyCode || event.charCode
+    var key = this.getKey(event)
     if (key === -189 || (event.shiftKey === false && key > 47 && key < 60) || !isNaN(Number(event.key))) {
       return true
     }
@@ -73,9 +73,12 @@ const only = {
      * Check if event key is a special key
      * returns Boolean
      */
-  is_special_key (event) {
+  event_is_special_key (event) {
+    var key = this.getKey(event)
+    return this.is_special_key(key)
+  },
+  is_special_key (key) {
     var allowableSpecialkey = [8, 35, 36, 37, 38, 39, 40, 46, 9, 27, 13, 110, 116, 115]
-    var key = event.which || event.keyCode || event.charCode
     var isSpecial = allowableSpecialkey.includes(key)
     // if ctrl+a or alt+a is down do not prevent
     var isSpecialA = key === 65 && (event.ctrlKey === true || event.metaKey === true)
@@ -87,12 +90,15 @@ const only = {
     return false
   },
   is_enter_key (event) {
-    var key = event.which || event.keyCode || event.charCode
+    var key = this.getKey(event)
     var allowableEnterKey = [13]
     if (allowableEnterKey.includes(key)) {
       return true
     }
     return false
+  },
+  getKey (event) {
+    return event.which || event.keyCode || event.charCode
   }
 }
 
