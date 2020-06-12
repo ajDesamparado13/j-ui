@@ -23,6 +23,7 @@ export default {
     return {
       preventUpdate: false,
       initialValue: this.value,
+      key: null,
       newValue: '',
       targetValue: ''
     }
@@ -86,7 +87,9 @@ export default {
       })
     },
     onKeydown (event) {
-      if (masks.only.is_special_key(event)) {
+      let key = masks.only.getKey(event)
+
+      if (masks.only.is_special_key(key)) {
         return
       }
       var value = event.target.value
@@ -96,16 +99,16 @@ export default {
       }
       let { format, options } = this.formatObject
       switch (format) {
-        case 'number': return masks.only.number_keys(event, options); break
-        case 'decimal': return masks.only.decimal_keys(event, options); break
-        case 'password': return masks.only.password_keys(event, options); break
+        case 'number': return masks.only.number_keys(event, options)
+        case 'decimal': return masks.only.decimal_keys(event, options)
+        case 'password': return masks.only.password_keys(event, options)
       }
       if (format.indexOf('date') >= 0) {
         return masks.only.date_keys(event)
       }
     },
     updateValue (event) {
-      if (event == undefined) {
+      if (event === undefined) {
         return
       }
       this.$nextTick(() => {
@@ -141,7 +144,7 @@ export default {
       }
 
       var { format, options } = this.formatObject
-      if (format == 'text') {
+      if (format === 'text') {
         this.newValue = value
         return
       } else if (!(key === '.' && format === 'decimal')) {
@@ -159,7 +162,7 @@ export default {
          */
     getRaw (value) {
       var { format, options } = this.formatObject
-      if (format == 'text' || this.type != 'text') {
+      if (format === 'text' || this.type !== 'text') {
         return value
       }
       value = formatter.getValue(value, format, options)
