@@ -81,14 +81,14 @@ export default {
         return
       }
 
-      this.handler_loading = true
       var promise = this.handler(this.model)
 
       if (promise && typeof promise.then === 'function') {
-        await promise
+        this.handler_loading = true
+        promise.finally(() => {
+          this.handler_loading = false
+        })
       }
-
-      this.handler_loading = false
     }
   }
 }
