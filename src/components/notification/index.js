@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import Notification from './Notification'
 
-import { use, registerComponentProgrammatic, registerComponent } from '../../utils/plugins'
+import { use, registerComponentProgrammatic, registerComponent } from '../plugins'
 
 const NotificationProgrammatic = {
   newComponent (options) {
