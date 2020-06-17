@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 import Notification from './Notification'
 
+import { propSetter } from '../utils'
 import { use, registerComponentProgrammatic, registerComponent } from '../plugins'
 
 const NotificationProgrammatic = {
@@ -15,30 +16,27 @@ const NotificationProgrammatic = {
   container: '',
   focus: null,
   list: [],
-  show (props) {
-    if (typeof props !== 'object') {
-      props = { message: props }
-    }
-    // container is required when using programmatic trigger
-    if (!this.container) {
-      // retry again in 2 seconds for cases
-      // when container is not yet mounted
-      setTimeout(() => { this.show(props) }, 2000)
-      return
+  show (params) {
+    params.container = params.container || this.container
+    let propsData = propSetter(Notification.props, params)
+
+    if (typeof params.container === 'undefined') {
+      propsData.container = this.container
     }
 
-    var propsData = Object.assign({
-      isProgrammatic: true,
-      focus: this.focus,
-      time: this.default_time,
-      container: this.container
-    }, props)
+    if (typeof params.time === 'undefined') {
+      propsData.time = this.default_time
+    }
+
+    if (typeof params.focus === 'undefined') {
+      propsData.focus = this.focus
+    }
 
     var n = this.newComponent({ el: document.createElement('div'), propsData })
     n.$on('close', (uid) => {
       var list = this.list
       var find = list.findIndex((compo) => {
-        return compo._uid == uid
+        return compo._uid === uid
       })
       if (find >= 0) {
         list.splice(find, 1)

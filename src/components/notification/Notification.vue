@@ -105,6 +105,20 @@ export default {
         this.removeElement(this.$el)
       }
       return null
+    },
+    mountToBody () {
+      document.body.appendChild(this.$el)
+    },
+    mountToContainer () {
+      let container = this.container
+      if (container._isVue) {
+        this.container = container.$el
+      }
+      this.previous_style = this.container.style
+      if (!this.isProgrammatic) {
+        this.container.style = 'position:relative;'
+      }
+      this.container.insertBefore(this.$el, this.container.firstChild)
     }
   },
   mounted () {
@@ -117,14 +131,19 @@ export default {
   },
   beforeMount () {
     if (!this.container) {
-      document.body.appendChild(this.$el)
-    } else {
-      this.previous_style = this.container.style
-      if (!this.isProgrammatic) {
-        this.container.style = 'position:relative;'
-      }
-      this.container.insertBefore(this.$el, this.container.firstChild)
+      this.mountToBody()
+      return
     }
+    let container = this.container
+    if (container._isVue) {
+      container.$on('hook:mounted', this.mountToContainer)
+      return
+    }
+    if (container instanceof HTMLElement) {
+      this.mountToContainer()
+      return
+    }
+    this.mountToBody()
   },
   components: {
     'ui-icon': UiIcon
