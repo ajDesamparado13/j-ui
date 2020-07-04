@@ -2,16 +2,19 @@
     <div class="ui-block block" v-bind="{id}">
         <div class="block-background" :class="{ 'is-overlay' :overlay }"> </div>
         <div class="block-content">
-            <ui-progress-circular
-                :size="48"
-                :stroke="5"
-                :type="type"
-                :progress="progress"
-                ></ui-progress-circular>
-            <div class="box block-message" v-if="has_process || block_message">
-                <span v-if="has_process">{{block_process}}%</span>
-                <slot><span v-if="block_message">{{block_message}}</span></slot>
-            </div>
+            <component v-if="component" :is="component" v-bind="{ message,size,progress }" > </component>
+            <template v-else>
+                <ui-progress-circular
+                    :size="48"
+                    :stroke="5"
+                    :type="type"
+                    :progress="progress"
+                    ></ui-progress-circular>
+                    <div class="box block-message" v-if="has_process || block_message">
+                        <span v-if="has_process">{{block_process}}%</span>
+                        <slot><span v-if="block_message">{{block_message}}</span></slot>
+                    </div>
+            </template>
         </div>
     </div>
 </template>
@@ -44,6 +47,9 @@ export default {
     }
   },
   props: {
+    size: {
+      required: false
+    },
     id: {
       type: String,
       default: 'ui-block'
@@ -60,10 +66,6 @@ export default {
       type: [String, Number],
       default: ''
     },
-    loading: {
-      type: Boolean,
-      default: false
-    },
     container: {
       type: [ HTMLElement, Object ],
       required: false,
@@ -76,6 +78,9 @@ export default {
     overlay: {
       type: Boolean,
       default: true
+    },
+    component: {
+      required: false
     }
   },
   methods: {
