@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import Modal from './Modal'
-import { use, registerComponentProgrammatic } from '../../utils/plugins'
+import { use, registerComponentProgrammatic } from '../plugins'
 
 const modalProgrammatic = {
   newComponent (options = {}) {

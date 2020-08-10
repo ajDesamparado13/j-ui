@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Block from './Block'
-import { use, registerComponentProgrammatic, registerComponent } from '../plugins'
+import { registerComponentProgrammatic, registerComponent } from '../plugins'
 
 const BlockProgrammatic = {
   newComponent (options = {}) {
@@ -9,11 +9,11 @@ const BlockProgrammatic = {
     return new BlockComponent(options)
   },
   show (params = {}) {
-    let props = Block.props;
+    let props = Block.props
     let propsData = {}
-    for(let key in props){
-        let prop = props[key];
-        propsData[key] =  typeof params[key] == 'undefined' ? prop.default : params[key]
+    for (let key in props) {
+      let prop = props[key]
+      propsData[key] = typeof params[key] === 'undefined' ? prop.default : params[key]
     }
     return this.newComponent({
       el: document.createElement('div'),
@@ -26,7 +26,6 @@ const Plugin = {
     registerComponent(Vue, Block)
     registerComponentProgrammatic(Vue, 'block', BlockProgrammatic)
   }
-
 }
 
 export default Plugin
