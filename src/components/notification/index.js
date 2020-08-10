@@ -3,7 +3,7 @@ import Vue from 'vue'
 import Notification from './Notification'
 
 import { propSetter } from '../utils'
-import { use, registerComponentProgrammatic, registerComponent } from '../plugins'
+import { use, registerComponentProgrammatic, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 const NotificationProgrammatic = {
   newComponent (options) {

@@ -1,6 +1,6 @@
 import Pager from './Pager'
 
-import { use, registerComponent } from '../../utils/plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 const Plugin = {
   install (Vue) {

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import Modal from './Modal'
-import { use, registerComponentProgrammatic } from '../plugins'
+import { use, registerComponentProgrammatic } from 'freedom-js-support/src/helpers/plugin'
 
 const modalProgrammatic = {
   newComponent (options = {}) {

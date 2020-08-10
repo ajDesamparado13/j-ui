@@ -1,6 +1,6 @@
 import SimpleTable from './SimpleTable'
 
-import { use, registerComponent } from '../plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 export {
   SimpleTable

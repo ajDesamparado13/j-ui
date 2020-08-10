@@ -1,6 +1,6 @@
 import Navbar from './Navbar'
 
-import { use, registerComponent } from '../../utils/plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 export {
   Navbar

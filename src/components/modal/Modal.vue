@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import mobile from 'freedom-js-support/src/utilities/mobile'
 export default {
   name: 'ui-modal',
   props: {
@@ -164,8 +165,8 @@ export default {
     }
   },
   created () {
-    var ios_version = this.$mobile.version.iOS()
-    if (ios_version != null && ios_version[0] < 11.3) {
+    var iosVersion = mobile.version.iOS()
+    if (iosVersion != null && iosVersion[0] < 11.3) {
       document.body.classList.add('ios-position-fixed')
     }
     if (typeof window !== 'undefined') {

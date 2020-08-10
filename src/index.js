@@ -1,7 +1,7 @@
 import components from './components'
 
 import config, { setOptions } from './components/config'
-import { registerComponentProgrammatic } from './components/plugins'
+import { registerComponentProgrammatic } from 'freedom-js-support/src/helpers/plugin'
 
 const UI = {
   install (Vue, options = {}) {

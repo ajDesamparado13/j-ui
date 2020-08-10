@@ -1,8 +1,6 @@
 import test from './test'
 import config from './config'
-import date from './date'
 import colors from './colors'
-import formatter from './formatter'
 import mobile from './mobile'
 // import lodash from './lodash/lodash'
 // import handler from './handler/handler'
@@ -12,12 +10,10 @@ import mobile from './mobile'
 // import route from './route/route'
 // import time from './time/time'
 import file from './file'
-import masks from './masks'
 import errorChecker from './error_checker'
 import url from './url'
 
 const HelperUtility = {
-  date,
   test,
   config,
   // lodash,
@@ -29,7 +25,6 @@ const HelperUtility = {
   // time,
   file,
   colors,
-  masks,
   errorChecker,
   mobile,
   url

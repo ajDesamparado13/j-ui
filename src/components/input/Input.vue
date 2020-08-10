@@ -11,8 +11,8 @@
 
 <script>
 import config from '../config'
-import formatter from '../../utils/formatter'
-import masks from '../../utils/masks'
+import formatter from 'freedom-js-support/src/utilities/formatter'
+import masks from 'freedom-js-support/src/utilities/masks'
 export default {
   name: 'ui-input',
   model: {

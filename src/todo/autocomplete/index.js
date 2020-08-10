@@ -1,5 +1,5 @@
 import autocomplete from './autocomplete'
-import { use, registerComponent } from '../../utils/plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 const Plugin = {
   install (Vue) {

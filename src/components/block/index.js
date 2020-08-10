@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Block from './Block'
-import { registerComponentProgrammatic, registerComponent } from '../plugins'
+import { registerComponentProgrammatic, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 const BlockProgrammatic = {
   newComponent (options = {}) {

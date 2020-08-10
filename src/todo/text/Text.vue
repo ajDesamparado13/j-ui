@@ -6,7 +6,7 @@
 <script>
 import BaseText from '../BaseText'
 import BaseUI from '../BaseUI'
-import formatter from '../../utils/formatter';
+import formatter from 'freedom-js-support/src/helpers/formatter';
 export default{
     extends:BaseUI,
     name:'ui-text',

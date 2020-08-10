@@ -1,6 +1,6 @@
 import Dropdown from './Dropdown'
 import DropdownItem from './DropdownItem'
-import { use, registerComponent } from '../../utils/plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 export {
   Dropdown,

@@ -1,7 +1,7 @@
 import Field from './Field'
 import FieldGroup from './FieldGroup'
 
-import { use, registerComponent } from '../plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 export {
   FieldGroup,

@@ -1,5 +1,5 @@
 import Control from './Control'
-import { use, registerComponent } from '../plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 const Plugin = {
   install (Vue) {

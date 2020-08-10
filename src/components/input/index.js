@@ -2,7 +2,7 @@ import Input from './Input'
 import Textbox from './Textbox'
 import Textarea from './Area'
 
-import { use, registerComponent } from '../plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 export {
   Input,

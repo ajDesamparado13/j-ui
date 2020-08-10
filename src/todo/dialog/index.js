@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Dialog from './Dialog'
 
-import { use, registerComponent, registerComponentProgrammatic } from '../../utils/plugins'
+import { use, registerComponent, registerComponentProgrammatic } from 'freedom-js-support/src/helpers/plugin'
 
 function open (propsData) {
   const vm = typeof window !== 'undefined' && window.Vue ? window.Vue : Vue

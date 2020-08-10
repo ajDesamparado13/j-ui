@@ -1,9 +1,9 @@
 import Radio from './Radio'
 
-import { use, registerComponent } from '../../utils/plugins'
+import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 export {
-    Radio
+  Radio
 }
 
 const Plugin = {

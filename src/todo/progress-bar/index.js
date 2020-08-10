@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import ProgressBar from './ProgressBar'
-import { use, registerComponentProgrammatic } from '../../utils/plugins'
+import { use, registerComponentProgrammatic } from 'freedom-js-support/src/helpers/plugin'
 
 export { ProgressBar }
 const ProgressProgrammatic = {
