@@ -1,7 +1,11 @@
 <template>
   <table class="ui-table table" :class="classes">
     <thead v-if="hasColumns">
-      <component :class="[ `header-cell-${column.name}` ]" :is="getHeaderComponent(column)" v-for="(column,colNum) in columns" :key="colNum"> {{ column.label }} </component>
+      <component v-for="(column,colNum) in columns" :key="colNum"
+       v-bind="getProps('header',null,column)"
+       v-on="getEvents('header',null,column)"
+       :is="getHeaderComponent(column)"
+       > {{ column.label }} </component>
     </thead>
     <tbody >
         <template v-if="hasData && hasColumns">

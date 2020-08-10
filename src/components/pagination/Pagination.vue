@@ -3,7 +3,9 @@
     <div class="pagination-container">
         <component :is="buttonComponent" class="pagination-item prev-page" type="secondary" @click="prevPage" :disabled="value == 1"
         >
-          <component :icon="iconLeft" :is="iconComponent" />
+          <slot name="prev-page-button">
+            <component :icon="iconLeft" :is="iconComponent" />
+          </slot>
         </component>
         <template v-for="( page,index ) in pages">
           <component :key="`pages-${index}`"
@@ -13,7 +15,7 @@
           color="primary"
           :disabled="page==value"
           @click="load(page)"
-           :is="!isNaN(Number(page)) > 0 ? buttonComponent : 'span'">
+           :is="isNumber(page) ? buttonComponent : 'span'" >
            {{page}}
           </component>
         </template>
@@ -24,7 +26,9 @@
           :disabled="disableNextPage || value==total"
           :is="buttonComponent"
         >
-          <component :icon="iconRight" :is="iconComponent" />
+          <slot name="next-page-button">
+            <component :icon="iconRight" :is="iconComponent" />
+          </slot>
         </component>
     </div>
   </div>
@@ -41,7 +45,7 @@ export default {
     */
     buttonComponent: {
       type: String,
-      default: config.defaultButton.component
+      default: config.defaultPagination.buttonComponent
     },
     /*
     * Icon component to be used
@@ -49,7 +53,7 @@ export default {
     */
     iconComponent: {
       type: String,
-      default: config.defaultIcon.component
+      default: config.defaultPagination.iconComponent
 
     },
     /*
@@ -94,6 +98,10 @@ export default {
       type: Number,
       default: 1
     },
+    hasSkip: {
+      type: Boolean,
+      default: true
+    },
     /*
     * Flag for disabling the next page
     */
@@ -115,21 +123,27 @@ export default {
 
       var sum = 1 + minimum
       if (sum <= lowest) {
-        pages.unshift(sum == lowest ? this.range(1, minimum) : ellipsis)
+        pages.unshift(sum === lowest ? this.range(1, minimum) : ellipsis)
         pages = pages.flat()
       }
 
       var difference = total - minimum
       if (difference >= highest) {
-        pages = pages.concat(difference == highest ? this.range(total - minimum + 1, total) : ellipsis)
+        pages = pages.concat(difference === highest ? this.range(total - minimum + 1, total) : ellipsis)
       }
 
-      if (pages.indexOf(1) == -1) {
+      if (pages.indexOf(1) === -1 && this.hasSkip) {
         pages.unshift(1)
       }
 
-      if (pages.indexOf(total) == -1) {
+      if (pages.indexOf(total) === -1 && this.hasSkip) {
         pages.push(total)
+      }
+
+      if (!this.hasSkip) {
+        pages = pages.filter((item, index) => {
+          return this.isNumber(item)
+        })
       }
 
       return pages
@@ -153,7 +167,7 @@ export default {
 
       if (total - currentPage >= lowestDenom) {
         startPage = currentPage - highestDenom
-      } else if (total == currentPage) {
+      } else if (total === currentPage) {
         startPage = currentPage - (maxPager - 1)
       } else {
         startPage = currentPage - highestDenom
@@ -163,6 +177,9 @@ export default {
     }
   },
   methods: {
+    isNumber (value) {
+      return !isNaN(Number(value))
+    },
     range (start, end) {
       return Array(end - start + 1).fill().map((_, index) => start + index)
     },
@@ -174,7 +191,7 @@ export default {
     },
     load (value, add = 0) {
       var page = value + add
-      if (!isNaN(page) && page != this.value && page >= 1 && page <= this.total) {
+      if (!isNaN(page) && page !== this.value && page >= 1 && page <= this.total) {
         this.$emit('input', page)
         this.$emit('change', page)
       }

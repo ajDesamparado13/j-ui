@@ -9,6 +9,8 @@ let config = {
 
   },
   defaultPagination: {
+    iconComponent: 'ui-icon',
+    buttonComponent: 'ui-button',
     iconLeft: 'chevron-left',
     iconRight: 'chevron-right'
   },
