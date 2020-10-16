@@ -2,14 +2,14 @@
   <table class="ui-table table" :class="{ 'no-content-table': !hasData }">
     <thead v-if="hasColumns && createColumns">
       <component v-for="(column,colNum) in columns" :key="colNum"
-       v-bind="getHeaderProps('header',null,column)"
-       v-on="getHeaderEvents(null,column)"
-       :is="getHeaderComponent(column)"
+       v-bind="getHeaderProps(column,{ colNum })"
+       v-on="getHeaderEvents(column,{colNum})"
+       :is="getHeaderComponent(column,{colNum})"
        > {{ column[labelKey] }} </component>
     </thead>
     <tbody v-if="createBody">
         <template v-if="hasData && hasColumns">
-          <component v-bind="getRowProps(datum,{rowNum})" v-on="getRowEvents(datum,rowNum)"  :is="getRowComponent(datum,rowNum)" v-for="(datum,rowNum) in items" :key="rowNum">
+          <component v-bind="getRowProps(datum,{rowNum})" v-on="getRowEvents(datum,{ rowNum })"  :is="getRowComponent(datum,{ rowNum })" v-for="(datum,rowNum) in items" :key="rowNum">
 
             <template v-for="(column,colNum) in columns">
 
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { make } from './helper'
 export default {
   name: 'ui-simple-table',
   data () {
@@ -115,84 +116,46 @@ export default {
     }
   },
   methods: {
-    getItems () {
-      return this.items
+    getHeaderEvents (column, params = {}) {
+      return make.events(column.events, Object.assign(params, { column }))
+    },
+    getHeaderProps (column, { colNum = null }) {
+      return make.props(column['header'], {
+        index: colNum,
+        class: [ `header-cell-${column.name}` ]
+      })
     },
     getHeaderComponent (column) {
-      return this.getComponent(column['header'], 'th')
+      return make.component(column['header'], 'th')
     },
-    getRowComponent (data, index) {
-      return this.getComponent(this.rows, 'tr', { model: data, index })
+    getRowComponent (model, { rowNum = null }) {
+      return make.component(this.rows, 'tr', { model, index: rowNum })
     },
-    getDataComponent (column) {
-      return this.getComponent(column['data'], 'td')
-    },
-    getComponent (config, defaultComponent, params = {}) {
-      if (!config || !config.component) {
-        return defaultComponent
-      }
-      if (typeof config.component === 'function') {
-        return config.component(params)
-      }
-      return config.component || defaultComponent
-    },
-    getRowEvents (model, rowNum) {
+    getRowEvents (model, { rowNum = null }) {
       let config = this.rows
-      return this.getEvents(typeof config.getEvents === 'function' ? config.getEvents(model, rowNum) : {}, { model })
-    },
-    getDataEvents (model, column) {
-      return this.getEvents(column.events, { model })
-    },
-    getHeaderEvents (model, column) {
-      return this.getEvents(column.events, { model })
-    },
-    getEvents (config, params) {
-      config = typeof config === 'object' ? config : {}
-      return Object.keys(config).reduce((events, key) => {
-        if (typeof config[key] === 'function') {
-          events[key] = () => { config[key](params) }
-        }
-        return events
-      }, {})
-    },
-    getDataProps (model, column, { rowNum = null, colNum = null }) {
-      let props = this.getProps(column['data'], { model, id: `cell-data-row-${rowNum}_col-${colNum}` })
-      props.class = this.getClassProps(props, [ `data-cell-${column.name}` ])
-      return props
+      return make.events(typeof config.getEvents === 'function' ? config.getEvents(model, rowNum) : {}, { model, rowNum })
     },
     getRowProps (model, { rowNum = null }) {
       let config = this.rows
-      let props = Object.assign({ model }, typeof config.getProps === 'function' ? config.getProps(model, rowNum) : {})
-      props.class = this.getClassProps(props, [ `row-${model.id}` ])
-      return props
+      return make.props(typeof config.getProps === 'function' ? config.getProps(model, rowNum) : {}, {
+        class: [ `row-${model.id}` ]
+      })
     },
-    getHeaderProps (model, column, { colNum = null }) {
-      let props = this.getProps(column['header'], { model, index: colNum })
-      props.class = this.getClassProps(props, [ `header-cell-${column.name}` ])
-      return props
+    getDataComponent (column) {
+      return make.component(column['data'], 'td')
     },
-    getProps (config, defaults = {}) {
-      return Object.assign(defaults, config.props)
+    getDataEvents (model, column) {
+      return make.events(column.events, { model, column })
     },
-    getClassProps (props, defaults) {
-      return Object.assign(this.getClassObject(defaults), this.getClassObject(props.class))
+    getDataProps (model, column, { rowNum = null, colNum = null }) {
+      return make.props(column['data'], {
+        model,
+        id: `cell-data-row-${rowNum}_col-${colNum}`,
+        class: [ `data-cell-${column.name}` ]
+      })
     },
-    getClassObject (classProp) {
-      if (!classProp || (typeof classProp === 'object' && !Array.isArray(classProp))) {
-        return {}
-      }
-
-      if (typeof classProp === 'string') {
-        classProp = classProp.split(' ')
-      }
-
-      if (Array.isArray(classProp)) {
-        return classProp.reduce((result, item, index, array) => {
-          result[item] = true
-          return result
-        }, {})
-      }
-      return classProp
+    getItems () {
+      return this.items
     },
     isTD (column) {
       return this.getDataComponent(column) === 'td'
@@ -204,7 +167,7 @@ export default {
         return data
       }
 
-      return filter(data, model)
+      return filter(data, model, column)
     },
     initializeComponents () {
       if (!(this.config && this.config.components)) {
