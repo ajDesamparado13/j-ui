@@ -1,13 +1,13 @@
 <template>
   <table class="ui-table table" :class="{ 'no-content-table': !hasData }">
-    <thead v-if="hasColumns">
+    <thead v-if="hasColumns && createColumns">
       <component v-for="(column,colNum) in columns" :key="colNum"
        v-bind="getHeaderProps('header',null,column)"
        v-on="getHeaderEvents(null,column)"
        :is="getHeaderComponent(column)"
        > {{ column[labelKey] }} </component>
     </thead>
-    <tbody >
+    <tbody v-if="createBody">
         <template v-if="hasData && hasColumns">
           <component v-bind="getRowProps(datum,{rowNum})" v-on="getRowEvents(datum,rowNum)"  :is="getRowComponent(datum,rowNum)" v-for="(datum,rowNum) in items" :key="rowNum">
 
@@ -87,6 +87,14 @@ export default {
     noContentText: {
       type: String,
       default: ''
+    },
+    createColumns: {
+      type: Boolean,
+      default: true
+    },
+    createBody: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
