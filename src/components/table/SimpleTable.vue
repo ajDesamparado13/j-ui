@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { component } from 'vue/types/umd'
 import { make, getConfig, getProperty } from './helper'
 export default {
   name: 'ui-simple-table',
