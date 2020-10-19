@@ -16,12 +16,14 @@ export const toClassObject = (classProp) => {
   return classProp
 }
 
-export const getConfig = (_config) => {
-  return typeof _config === 'object' ? _config : {}
+export const getConfig = (_config, tap = null) => {
+  let config = typeof _config === 'object' ? _config : {}
+  return typeof tap === 'function' ? tap(config) : config
 }
 
-export const getProperty = (_config, key, defaultValue) => {
-  return (getConfig(_config))[key] || defaultValue
+export const getProperty = (_config, key, defaultValue, tap = null) => {
+  let property = (getConfig(_config))[key] || defaultValue
+  return typeof tap === 'function' ? tap(property) : property
 }
 
 export const make = {

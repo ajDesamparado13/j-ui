@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import { make, getConfig } from './helper'
+import { component } from 'vue/types/umd'
+import { make, getConfig, getProperty } from './helper'
 export default {
   name: 'ui-simple-table',
   data () {
@@ -132,14 +133,12 @@ export default {
       return make.component(getConfig(this.rows), 'tr', { model, index: rowNum })
     },
     getRowEvents (model, { rowNum = null }) {
-      let config = getConfig(this.rows)
-      return make.events(typeof config.get === 'function' ? config.get(model, rowNum) : {}, { model, rowNum })
+      let config = getConfig(this.rows, (_config) => { return typeof _config.get === 'function' ? _config.get(model, rowNum) : {} })
+      return make.events(config, { model, rowNum })
     },
     getRowProps (model, { rowNum = null }) {
-      let config = getConfig(this.rows)
-      return make.props(typeof config.get === 'function' ? config.get(model, rowNum) : {}, {
-        class: [ `row-${model.id}` ]
-      })
+      let config = getConfig(this.rows, (_config) => { return typeof _config.get === 'function' ? _config.get(model, rowNum) : {} })
+      return make.props(config, { class: [ `row-${model.id}` ] })
     },
     getDataComponent (column) {
       return make.component(column['data'], 'td')
@@ -170,13 +169,10 @@ export default {
       return filter(data, model, column)
     },
     initializeComponents () {
-      if (!(this.config && this.config.components)) {
-        return
-      }
-
-      Object.values(this.config.components).forEach((component) => {
-        this.$options.components[component.name] = component
+      let components = getProperty(this.config, 'components', [], (property) => {
+        return Array.isArray(property) ? property : Object.values(property)
       })
+      components.forEach((component) => { this.$options.components[component.name] = component })
     }
   },
   created (vm) {
