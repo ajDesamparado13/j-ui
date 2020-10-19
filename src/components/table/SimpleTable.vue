@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { make } from './helper'
+import { make, getConfig } from './helper'
 export default {
   name: 'ui-simple-table',
   data () {
@@ -129,15 +129,15 @@ export default {
       return make.component(column['header'], 'th')
     },
     getRowComponent (model, { rowNum = null }) {
-      return make.component(this.rows, 'tr', { model, index: rowNum })
+      return make.component(getConfig(this.rows), 'tr', { model, index: rowNum })
     },
     getRowEvents (model, { rowNum = null }) {
-      let config = this.rows
-      return make.events(typeof config.getEvents === 'function' ? config.getEvents(model, rowNum) : {}, { model, rowNum })
+      let config = getConfig(this.rows)
+      return make.events(typeof config.get === 'function' ? config.get(model, rowNum) : {}, { model, rowNum })
     },
     getRowProps (model, { rowNum = null }) {
-      let config = this.rows
-      return make.props(typeof config.getProps === 'function' ? config.getProps(model, rowNum) : {}, {
+      let config = getConfig(this.rows)
+      return make.props(typeof config.get === 'function' ? config.get(model, rowNum) : {}, {
         class: [ `row-${model.id}` ]
       })
     },

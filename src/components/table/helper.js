@@ -16,8 +16,12 @@ export const toClassObject = (classProp) => {
   return classProp
 }
 
+export const getConfig = (_config) => {
+  return typeof _config === 'object' ? _config : {}
+}
+
 export const getProperty = (_config, key, defaultValue) => {
-  return (typeof _config === 'object' ? _config : {})[key] || defaultValue
+  return (getConfig(_config))[key] || defaultValue
 }
 
 export const make = {
