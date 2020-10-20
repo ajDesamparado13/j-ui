@@ -41,7 +41,7 @@ export const make = {
     return typeof component === 'function' ? component(params) : component
   },
   props (config, defaults = {}) {
-    let props = getProperty(config, 'props', {})
+    let props = Object.assign({}, getProperty(config, 'props', {}))
     props.class = this.mergeClasses(props.class, defaults.class)
     return Object.assign(defaults, props)
   },
