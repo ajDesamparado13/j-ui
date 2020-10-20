@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     getHeaderEvents (column, params = {}) {
-      return make.events(column.events, Object.assign(params, { column }))
+      return make.events(column['header'], Object.assign(params, { column }))
     },
     getHeaderProps (column, { colNum = null }) {
       return make.props(column['header'], {
@@ -143,7 +143,7 @@ export default {
       return make.component(column['data'], 'td')
     },
     getDataEvents (model, column) {
-      return make.events(column.events, { model, column })
+      return make.events(column['data'], { model, column })
     },
     getDataProps (model, column, { rowNum = null, colNum = null }) {
       return make.props(column['data'], {
