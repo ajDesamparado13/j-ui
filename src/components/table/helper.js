@@ -31,7 +31,7 @@ export const make = {
     let config = getProperty(_config, 'events', {})
     return Object.keys(config).reduce((events, key) => {
       if (typeof config[key] === 'function') {
-        events[key] = () => { config[key](params) }
+        events[key] = (event) => { config[key](Object.assign(params, event)) }
       }
       return events
     }, {})
