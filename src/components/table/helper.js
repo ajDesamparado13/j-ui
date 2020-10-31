@@ -1,3 +1,4 @@
+import Arr from 'freedom-js-support/src/utilities/arr'
 export const toClassObject = (classProp) => {
   if (!classProp || (typeof classProp === 'object' && !Array.isArray(classProp))) {
     return {}
@@ -16,20 +17,11 @@ export const toClassObject = (classProp) => {
   return classProp
 }
 
-export const getConfig = (_config, tap = null) => {
-  let config = typeof _config === 'object' ? _config : {}
-  return typeof tap === 'function' ? tap(config) : config
-}
-
-export const getProperty = (_config, key, defaultValue, tap = null) => {
-  let property = (getConfig(_config))[key] || defaultValue
-  return typeof tap === 'function' ? tap(property) : property
-}
-
 export const make = {
   events (_config, params) {
-    let config = getProperty(_config, 'events', {})
-    return Object.keys(config).reduce((events, key) => {
+    let config = Arr.getProperty(_config, 'events', {})
+    let keys = Object.keys(config)
+    return keys.length <= 0 ? {} : keys.reduce((events, key) => {
       if (typeof config[key] === 'function') {
         events[key] = (event) => { config[key](Object.assign(params, event)) }
       }
@@ -37,11 +29,11 @@ export const make = {
     }, {})
   },
   component (_config, defaultComponent, params = {}) {
-    let component = getProperty(_config, 'component', defaultComponent)
+    let component = Arr.getProperty(_config, 'component', defaultComponent)
     return typeof component === 'function' ? component(params) : component
   },
   props (config, defaults = {}) {
-    let props = Object.assign({}, getProperty(config, 'props', {}))
+    let props = Object.assign({}, Arr.getProperty(config, 'props', {}))
     props.class = this.mergeClasses(props.class, defaults.class)
     return Object.assign(defaults, props)
   },
