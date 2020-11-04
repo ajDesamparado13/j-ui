@@ -137,10 +137,9 @@ export default {
     },
     getHeaderProps (column, { colNum = null }) {
       const defaults = {
-        column,
         class: [ `header-cell-${column.name}` ]
       }
-      return !this.isConfigurableHeader ? defaults : make.props(column['header'], { index: colNum }, defaults)
+      return !this.isConfigurableHeader ? defaults : make.props(column['header'], { index: colNum, column }, defaults)
     },
     getHeaderComponent (column) {
       return !this.isConfigurableHeader ? 'th' : make.component(column['header'], 'th')
