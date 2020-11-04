@@ -27,7 +27,7 @@
 
           </template>
         </component>
-        <tr v-if="hasData && noContentText">
+        <tr v-if="noContentText && !hasData">
           <td style="text-align:center" :colspan="(columns.length)">{{noContentText}}</td>
         </tr>
     </tbody>
