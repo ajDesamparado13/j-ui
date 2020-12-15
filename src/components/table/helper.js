@@ -1,4 +1,5 @@
 import Arr from 'freedom-js-support/src/utilities/arr'
+import merge from 'lodash/merge'
 export const toClassObject = (classProp) => {
   if (!classProp || (typeof classProp === 'object' && !Array.isArray(classProp))) {
     return {}
@@ -38,6 +39,6 @@ export const make = {
     return Object.assign(defaults, props)
   },
   mergeClasses (target, defaults) {
-    return Object.assign(toClassObject(defaults), toClassObject(target))
+    return merge(toClassObject(defaults), toClassObject(target))
   }
 }
