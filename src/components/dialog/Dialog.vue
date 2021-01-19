@@ -1,6 +1,6 @@
 <template>
 <transition :name="animation">
-    <div class="ui-dialog dialog">
+<div class="ui-dialog dialog" :style="{position:position}">
         <div class="dialog-background" @click="cancel('outside')"/>
         <div class="box">
           <div class="animation-content dialog-content">
@@ -44,6 +44,10 @@ export default {
     canCancel: {
       type: [Array, Boolean],
       default: () => CANCELATION_METHODS
+    },
+    position: {
+      type: String,
+      default: 'fixed'
     }
   },
   computed: {
