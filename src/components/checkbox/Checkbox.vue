@@ -212,7 +212,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../styles/imports';
+@import '../../scss/_variables';
+@import '../../scss/util';
 
 $ui-checkbox-size                   : 20px ; // no !default as it shouldn't be overridden
 $ui-checkbox-focus-ring-size        : $ui-checkbox-size * 2.1;
