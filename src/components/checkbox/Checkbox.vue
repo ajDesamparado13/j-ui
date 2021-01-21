@@ -107,11 +107,32 @@ export default {
     }
   },
   created () {
+  },
+  mounted () {
+    if (this.isValueObject) {
+      this.initializeValueObject()
+    }
     if (this.isValuePrimary) {
-      this.newValue = this.looseEqual(this.value, this.trueValue)
+      this.initializeValuePrimary()
+    }
+    if (this.isValueArray) {
+      this.initializeValueArray()
     }
   },
   methods: {
+    initializeValuePrimary () {
+      this.setValue(this.looseEqual(this.value, this.trueValue))
+    },
+    initializeValueArray () {
+      var list = this.value
+      var index = list.findIndex((item) => {
+        return this.looseEqual(item, this.trueValue)
+      })
+      this.setValue(index >= 0)
+    },
+    initializeValueObject () {
+      this.setValue(this.value.hasOwnProperty(this.keyName))
+    },
     allowDefault () {
       this.doEmit = true
       return this
