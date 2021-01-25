@@ -67,7 +67,7 @@ export default {
       return this.newValue.toString().trim().length > 0
     },
     showSuggestions () {
-      return this.hasMatches && (openOnFocus || this.hasValue)
+      return this.hasMatches && (this.openOnFocus || this.hasValue)
     },
     hasMatches () {
       return this.matches.length > 0
