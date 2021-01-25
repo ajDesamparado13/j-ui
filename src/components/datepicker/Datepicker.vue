@@ -16,9 +16,9 @@
 </template>
 <script>
 
-import CALENDAR from './Calendar'
-import { FIELD } from '../field'
-import { DROPDOWN } from '../dropdown'
+import Calendar from './Calendar'
+import { Field } from '../field'
+import { Dropdown } from '../dropdown'
 import Arr from 'freedom-js-support/src/utilities/arr'
 
 export default {
@@ -108,9 +108,9 @@ export default {
     }
   },
   components: {
-    'ui-calendar': CALENDAR,
-    'ui-field': FIELD,
-    'ui-dropdown': DROPDOWN
+    'ui-calendar': Calendar,
+    'ui-field': Field,
+    'ui-dropdown': Dropdown
   }
 }
 </script>

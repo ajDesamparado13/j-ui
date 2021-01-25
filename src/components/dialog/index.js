@@ -42,13 +42,18 @@ const DialogProgrammatic = {
   }
 }
 
-export const VUE_INSTALLER = {
+const Plugin = {
   install (Vue, options) {
     let name = Arr.getProperty(options, 'name', 'dialog')
     registerComponent(Vue, DialogComponent)
     registerComponentProgrammatic(Vue, name, DialogProgrammatic)
   }
 }
+use(Plugin)
 
-use(VUE_INSTALLER)
-export default DialogProgrammatic
+export {
+  DialogComponent,
+  DialogProgrammatic
+}
+
+export default Plugin
