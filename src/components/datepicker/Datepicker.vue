@@ -3,8 +3,7 @@
     <ui-dropdown ref="dropdown" v-bind="{disabled}">
         <template slot="trigger">
             <ui-input v-model="newValue" ref="input" v-bind="{disabled}"
-            v-on:keydown-enter="$listeners['keydown-enter']"
-            v-on:keydown="$listeners['keydown']"
+            v-on="$listeners"
             :format="`date|fromString:${format}`"
             />
             <button class="ui-button button trigger-button">
