@@ -24,6 +24,9 @@
 </template>
 
 <script>
+import { Field } from '../field'
+import { Dropdown } from '../dropdown'
+import { Input } from '../input'
 export default {
   name: 'ui-autocomplete',
   model: { prop: 'value', event: 'autocomplete-update' },
@@ -165,6 +168,11 @@ export default {
       this.$emit('autocomplete-update', value)
       this.setAppendOptions()
     }
+  },
+  components: {
+    'ui-dropdown': Dropdown,
+    'ui-input': Input,
+    'ui-field': Field
   }
 }
 </script>
