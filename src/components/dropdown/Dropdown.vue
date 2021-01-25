@@ -4,7 +4,7 @@
         <slot name="trigger"></slot>
     </div>
     <transition name="fade">
-        <div class="dropdown-content box" ref="content" v-show="isActive">
+        <div class="dropdown-content box" ref="content" v-show="isActive && show">
             <slot @close="close"> </slot>
         </div>
     </transition>
@@ -16,6 +16,10 @@ export default {
     props:{
         disabled:Boolean,
         hoverable:Boolean,
+        show:{
+            type:Boolean,
+            default:true,
+        },
     },
     data(){
         return {
