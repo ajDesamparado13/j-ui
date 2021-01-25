@@ -63,14 +63,14 @@ export default {
     }
   },
   computed: {
-    hasValue(){
-      return this.newValue.toString().trim().length > 0;
+    hasValue () {
+      return this.newValue.toString().trim().length > 0
     },
-    showSuggestions(){
-      return this.hasMatches && ( openOnFocus || this.hasValue );
+    showSuggestions () {
+      return this.hasMatches && (openOnFocus || this.hasValue)
     },
     hasMatches () {
-      return this.matches.length > 0 
+      return this.matches.length > 0
     },
     items () {
       let items = this.options.map((x) => x)
@@ -123,8 +123,7 @@ export default {
         this.hovered = this.matches[selectIndex >= 0 ? selectIndex : 0]
       })
     },
-    onHover (e) 
-    
+    onHover (e) {
       this.isMouseHovered = true
       let hoveredValue = e.toElement.innerText
       this.hovered = hoveredValue

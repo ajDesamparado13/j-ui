@@ -1,9 +1,9 @@
 
-import Autocomplete from './autocomplete'
+import Autocomplete from './Autocomplete'
 import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
 export {
-  Autocomplete,
+  Autocomplete
 }
 
 const Plugin = {
@@ -13,5 +13,3 @@ const Plugin = {
 }
 use(Plugin)
 export default Plugin
-
-
