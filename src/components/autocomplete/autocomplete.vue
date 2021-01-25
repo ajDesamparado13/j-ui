@@ -1,13 +1,13 @@
 <template>
     <ui-field class="ui-autocomplete" v-bind="$_Arr.only($attrs,['label','required','message','loading','invalid','name','disabled'])">
-        <ui-dropdown ref="dropdown" :show="hasMatches">
+        <ui-dropdown ref="dropdown" :show="showSuggestions">
             <ui-input ref="input" slot="trigger" v-model="newValue"
             @keydown-enter="onEnter"
             @keydown.native.tab="onTab"
             @keydown.native.up.prevent="onArrowKey('up')"
             @keydown.native.down.prevent="onArrowKey('down')"
             />
-                <div class="autocomplete-suggestions" @mouseover="()=> isMouseHovered = true" @mouseout="()=>isMouseHovered=false">
+              <div class="autocomplete-suggestions" @mouseover="()=> isMouseHovered = true" @mouseout="()=>isMouseHovered=false">
                 <slot v-bind:suggestions="matches">
                     <div @mouseover="onHover"
                      class="dropdown-item"
@@ -63,8 +63,14 @@ export default {
     }
   },
   computed: {
+    hasValue(){
+      return this.newValue.toString().trim().length > 0;
+    },
+    showSuggestions(){
+      return this.hasMatches && ( openOnFocus || this.hasValue );
+    },
     hasMatches () {
-      return this.matches.length > 0
+      return this.matches.length > 0 
     },
     items () {
       let items = this.options.map((x) => x)
@@ -117,7 +123,8 @@ export default {
         this.hovered = this.matches[selectIndex >= 0 ? selectIndex : 0]
       })
     },
-    onHover (e) {
+    onHover (e) 
+    
       this.isMouseHovered = true
       let hoveredValue = e.toElement.innerText
       this.hovered = hoveredValue
