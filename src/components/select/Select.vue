@@ -13,80 +13,80 @@
 <script>
 import { Field } from '../field'
 export default {
-    name:'ui-select',
-    model:{ prop:'value', event:'update'},
-    data(){
-        return {
-            newValue:'',
-        }
-    },
-    watch:{
-        value:{
-            immediate:true,
-            handler(value){
-                var val = this.getValue(value)
-                this.newValue = this.newValue != val ? val : this.newValue;
-            },
-        },
-    },
-    props:{
-        value:{
-            required:true,
-        },
-        options:{
-            type:Array,
-            required:true,
-        },
-        placeholder:String,
-        blankLabel:{
-            type:String,
-            default:'',
-        },
-        keyLabel:{
-            type:String,
-            default:'label',
-        },
-        keyValue:{
-            type:String,
-            default:'value',
-        },
-        defaultValue:{ type:[String,Number],default:''},
-        returnObject:{
-            type:Boolean,
-            default:false,
-        },
-    },
-    methods:{
-        updateValue(event){
-            var val = event.target.value;
-            this.newValue = val === this.blankLabel ? '' : val;
-            let value = '';
-            if(val !== this.blankLabel ){
-                value = this.returnObject ? this.getObject(this.val) : this.getValue(val)
-            }
-            this.$emit('update',value);
-            this.$emit('change',value);
-        },
-        getValue(value){
-            if(value == undefined || value == '') return value;
-            return this.$_Arr.getProperty(value,this.keyValue,value);
-        },
-        getObject(value){
-            let val = this.getValue(value);
-            return this.options.find((item)=>{
-                return (this.$_Arr.getProperty(item,this.keyValue,item)) === val
-            });
-        }
-    },
-    components:{
-        'ui-field' : Field,
+  name: 'ui-select',
+  model: { prop: 'value', event: 'update' },
+  data () {
+    return {
+      newValue: ''
     }
+  },
+  watch: {
+    value: {
+      immediate: true,
+      handler (value) {
+        var val = this.getValue(value)
+        this.newValue = this.newValue != val ? val : this.newValue
+      }
+    }
+  },
+  props: {
+    value: {
+      required: true
+    },
+    options: {
+      type: Array,
+      required: true
+    },
+    placeholder: String,
+    blankLabel: {
+      type: String,
+      default: ''
+    },
+    keyLabel: {
+      type: String,
+      default: 'label'
+    },
+    keyValue: {
+      type: String,
+      default: 'value'
+    },
+    defaultValue: { type: [String, Number], default: '' },
+    returnObject: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    updateValue (event) {
+      var val = event.target.value
+      this.newValue = val === this.blankLabel ? '' : val
+      let value = ''
+      if (val !== this.blankLabel) {
+        value = this.returnObject ? this.getObject(this.val) : this.getValue(val)
+      }
+      this.$emit('update', value)
+      this.$emit('change', value)
+    },
+    getValue (value) {
+      if (value == undefined || value == '') return value
+      return this.$_Arr.getProperty(value, this.keyValue, value)
+    },
+    getObject (value) {
+      let val = this.getValue(value)
+      return this.options.find((item) => {
+        return (this.$_Arr.getProperty(item, this.keyValue, item)) === val
+      })
+    }
+  },
+  components: {
+    'ui-field': Field
+  }
 }
 </script>
 <style lang="scss">
 .ui-select{
     select{
-        -webkit-appearance: none; 
+        -webkit-appearance: none;
         &:hover{
             border-color:#dbdbdb;
         }

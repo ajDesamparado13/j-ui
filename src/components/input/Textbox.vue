@@ -1,5 +1,5 @@
 <template>
-    <ui-field class="ui-textbox" v-bind="field_props" >
+    <ui-field class="ui-textbox"  v-bind="$_Arr.only($attrs,['label','required','loading','invalid','name','disabled','error','help'])" >
         <ui-control :isFullwidth="isFullwidth" :icon="$attrs['icon']" :iconLeft="$attrs['iconLeft']"
             :iconRight="$attrs['iconRight']" :iconPosition="$attrs['iconPosition']">
             <ui-textarea v-if="type == 'textarea'"
