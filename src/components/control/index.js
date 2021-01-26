@@ -9,4 +9,8 @@ const Plugin = {
 }
 use(Plugin)
 
+export {
+  Control
+}
+
 export default Plugin

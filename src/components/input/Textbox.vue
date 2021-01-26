@@ -1,57 +1,28 @@
 <template>
     <ui-field class="ui-textbox"  v-bind="$_Arr.only($attrs,['label','required','loading','invalid','name','disabled','error','help'])" >
-        <ui-control :isFullwidth="isFullwidth" :icon="$attrs['icon']" :iconLeft="$attrs['iconLeft']"
-            :iconRight="$attrs['iconRight']" :iconPosition="$attrs['iconPosition']">
-            <ui-textarea v-if="type == 'textarea'"
-                ref="input"
-                :class="{'is-fullwidth' : isFullwidth}"
-                v-bind="$attrs"
-                v-on="$listeners"
-
-                :autocomplete="autocomplete ? autocomplete : null"
-                :disabled="disabled || loading"
-                :maxlength="enforceMaxlength ? maxlength : null"
-                :name="name"
-                :number="type === 'number' ? true : null"
-                :placeholder="placeholder"
-                :readonly="readonly"
-                :required="required"
-                :type="type"
-                v-model="newValue"
-                />
-            <ui-input v-else
-                ref="input"
-                :class="{'is-fullwidth' : isFullwidth}"
-                v-bind="$attrs"
-                v-on="$listeners"
-
-                :autocomplete="autocomplete ? autocomplete : null"
-                :disabled="disabled || loading"
-                :maxlength="enforceMaxlength ? maxlength : null"
-                :name="name"
-                :number="type === 'number' ? true : null"
-                :placeholder="placeholder"
-                :readonly="readonly"
-                :required="required"
-                :type="type"
-                v-model="newValue"
-                />
+        <ui-control v-bind="$_Arr.only($attrs,['icon','iconLeft','iconRight','iconPosition'])">
+            <component ref="input" v-bind="$attrs" v-model="newValue" v-on="$listeners"
+            :autocomplete="autocomplete ? autocomplete : null"
+            :maxlength="enforceMaxlength ? maxlength : null"
+            :number="type === 'number' ? true : null"
+            :type="type"
+            :is="type ==='textarea' ? 'ui-textarea' : 'ui-input'"
+            />
         </ui-control>
-            <slot slot="after"></slot>
-            <small
-                v-if="maxlength && enforceMaxlength"
-                slot="help"
-                class="help counter"
-                :class="{ 'is-invisible': !isFocused }">
-                {{ valueLength }} / {{ maxlength }}
-            </small>
+        <slot slot="after"></slot>
+        <small
+            v-if="maxlength && enforceMaxlength"
+            slot="help"
+            class="help counter"
+            :class="{ 'is-invisible': !isFocused }">
+            {{ valueLength }} / {{ maxlength }}
+        </small>
     </ui-field>
 </template>
 
 <script>
-import BaseForm from '../BaseForm'
 import BaseUI from '../BaseUI'
-import Control from '../control/Control'
+import { Control } from '../control'
 import Area from './Area'
 import Input from './Input'
 import Field from '../field/Field'
@@ -90,10 +61,6 @@ export default {
     enforceMaxlength: {
       type: Boolean,
       default: false
-    },
-    isFullwidth: {
-      type: Boolean,
-      default: false
     }
   },
   computed: {
@@ -105,14 +72,11 @@ export default {
     clear () {
       this.$refs['input'].clear()
     },
-    getNewValue () {
-      return this.newValue
-    },
     reset () {
       this.$refs['input'].reset()
     },
     focus () {
-      this.$el.querySelector(this.type == 'textarea' ? 'textarea' : 'input').focus()
+      this.$el.querySelector(this.type === 'textarea' ? 'textarea' : 'input').focus()
     }
   },
   watch: {
@@ -125,9 +89,7 @@ export default {
     newValue (value) {
       this.$emit('input', value)
     }
-
   },
-  mixins: [BaseForm],
   components: {
     'ui-field': Field,
     'ui-control': Control,
