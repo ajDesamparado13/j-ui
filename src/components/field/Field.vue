@@ -31,8 +31,8 @@
                 <slot></slot>
             </div>
             <slot name="after"></slot>
-            <div class="feedback" v-if="hasMessage || message">
-                <p class="help" :class="status" > {{message}} </p>
+            <div class="feedback" v-if="feedback">
+                <p class="help" :class="status" > {{ feedback }} </p>
                 <slot name="help"></slot>
             </div>
         </template>
@@ -51,8 +51,8 @@ export default {
   props: {
     forCheckbox: { type: Boolean, default: false },
     isHorizontal: { type: Boolean, default: false },
-    message: { type: String, default: '' },
-    hasMessage: { type: Boolean, default: false },
+    error: { type: String, default: '' },
+    help: { type: String, default: '' },
     requiredText: { type: String, default: 'required' },
     required: { type: Boolean, default: false },
     label: { type: String, default: '' },
@@ -64,6 +64,9 @@ export default {
     loading: { type: Boolean, default: false }
   },
   computed: {
+    feedback () {
+      return this.error || this.help
+    },
     status () {
       return this.invalid ? 'is-danger' : 'is-primary'
     },

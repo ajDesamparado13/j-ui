@@ -1,5 +1,5 @@
 <template>
-    <ui-field class="ui-autocomplete" v-bind="$_Arr.only($attrs,['label','required','message','loading','invalid','name','disabled'])">
+    <ui-field class="ui-autocomplete" v-bind="$_Arr.only($attrs,['label','required','error','help','loading','invalid','name','disabled'])">
         <ui-dropdown ref="dropdown" :show="showSuggestions">
             <ui-input ref="input" slot="trigger" v-model="newValue"
             @keydown-enter="onEnter"
