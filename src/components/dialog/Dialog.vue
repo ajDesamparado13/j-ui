@@ -1,12 +1,16 @@
 <template>
 <transition :name="animation">
-<div class="ui-dialog dialog" :style="{position:position}">
-        <div class="dialog-background" @click="cancel('outside')"/>
+    <div class="ui-dialog dialog" :style="{position:position}">
+        <div class="dialog-background" @click="cancel('outside')"></div>
         <div class="box">
-          <div class="animation-content dialog-content">
-            <component v-if="component" v-bind="props" v-on="events" :is="component" @close="close"/>
-            <div v-else-if="content" v-html="content"/>
-            <slot v-bind="props" v-on="events" :is="component" @close="close" v-else/>
+          <div class="animation-content">
+            <component class="dialog-content" v-if="component" v-bind="props" v-on="events" :is="component" @close="close"/>
+            <div class="dialog-content" v-else v-bind="props">
+                <div  v-if="content" v-html="content"> </div>
+                <div class="buttons">
+                    <button class="ui-button button" v-for="(btn,index) in buttons" :key="index" v-on="getEvents(btn)" v-bind="getProps(btn)" >{{ getText(btn) }}</button>
+                </div>
+            </div>
           </div>
           <button class="dialog-close" @click="cancel('x')" type="button"></button>
         </div>
@@ -15,10 +19,15 @@
 </template>
 
 <script>
+
 const CANCELATION_METHODS = ['escape', 'x', 'outside', 'button']
 export default {
   name: 'ui-dialog',
   props: {
+    buttons: {
+      type: Array,
+      required: false
+    },
     animation: {
       type: String,
       default: 'zoom-out'
@@ -62,6 +71,25 @@ export default {
     }
   },
   methods: {
+    getText (btn) {
+      return this.$_Arr.getProperty(btn, 'text', '')
+    },
+    getEvents (btn) {
+      return Object.keys(btn).reduce((events, key, index) => {
+        if (typeof btn[key] === 'function') {
+          events[key] = () => { btn[key](); this.close() }
+        }
+        return events
+      }, { click: () => { this.close() } })
+    },
+    getProps (btn) {
+      return Object.keys(btn).reduce((props, key, index) => {
+        if (typeof btn[key] !== 'function') {
+          props[key] = btn[key]
+        }
+        return props
+      }, {})
+    },
     cancel (method) {
       return this.cancelOptions.indexOf(method) < 0 ? null : this.close(method)
     },

@@ -4,6 +4,22 @@ import { use, registerComponent, registerComponentProgrammatic } from 'freedom-j
 import Vue from 'vue'
 
 const DialogProgrammatic = {
+  confirmText: 'OK',
+  cancelText: 'CANCEL',
+  confirm (params) {
+    let onConfirm = Arr.getProperty(params, 'onConfirm', () => {})
+    let confirmText = Arr.getProperty(params, 'confirmText', this.confirmText)
+    let onCancel = Arr.getProperty(params, 'onCancel', () => {})
+    let cancelText = Arr.getProperty(params, 'cancelText', this.cancelText)
+
+    let config = Object.assign({
+      buttons: [
+        { text: cancelText, click: onCancel },
+        { text: confirmText, click: onConfirm }
+      ]
+    }, params)
+    return this.open(config)
+  },
   newComponent (options = {}) {
     const vm = typeof window !== 'undefined' && window.Vue ? window.Vue : Vue
     const DialogClass = vm.extend(DialogComponent)
@@ -36,6 +52,9 @@ const DialogProgrammatic = {
       store
     })
     return comp
+  },
+  info (params) {
+    return this.open(params)
   },
   show (params) {
     return this.open(params)
