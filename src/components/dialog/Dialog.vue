@@ -20,7 +20,7 @@
 
 <script>
 
-const CANCELATION_METHODS = ['escape', 'x', 'outside', 'button']
+import { CancelationMethods } from './index'
 export default {
   name: 'ui-dialog',
   props: {
@@ -52,7 +52,7 @@ export default {
     },
     canCancel: {
       type: [Array, Boolean],
-      default: () => CANCELATION_METHODS
+      default: () => CancelationMethods
     },
     position: {
       type: String,
@@ -64,7 +64,7 @@ export default {
       if (Array.isArray(this.canCancel)) {
         return this.canCancel
       }
-      return this.canCancel ? CANCELATION_METHODS : []
+      return this.canCancel ? CancelationMethods : []
     },
     showX () {
       return this.cancelOptions.indexOf('x') >= 0
@@ -77,7 +77,7 @@ export default {
     getEvents (btn) {
       return Object.keys(btn).reduce((events, key, index) => {
         if (typeof btn[key] === 'function') {
-          events[key] = () => { btn[key](); this.close() }
+          events[key] = (event) => { btn[key](); this.close(event) }
         }
         return events
       }, { click: () => { this.close() } })
@@ -93,8 +93,8 @@ export default {
     cancel (method) {
       return this.cancelOptions.indexOf(method) < 0 ? null : this.close(method)
     },
-    close () {
-      this.$emit('close')
+    close (event = null) {
+      this.$emit('close', event)
       if (this.isProgrammatic) {
         this.$destroy()
         this.removeElement(this.$el)

@@ -3,23 +3,13 @@ import DialogComponent from './Dialog'
 import { use, registerComponent, registerComponentProgrammatic } from 'freedom-js-support/src/helpers/plugin'
 import Vue from 'vue'
 
+const CancelationMethods = ['escape', 'x', 'outside', 'button']
+
 const DialogProgrammatic = {
   confirmText: 'OK',
   cancelText: 'CANCEL',
-  confirm (params) {
-    let onConfirm = Arr.getProperty(params, 'onConfirm', () => {})
-    let confirmText = Arr.getProperty(params, 'confirmText', this.confirmText)
-    let onCancel = Arr.getProperty(params, 'onCancel', () => {})
-    let cancelText = Arr.getProperty(params, 'cancelText', this.cancelText)
-
-    let config = Object.assign({
-      buttons: [
-        { text: cancelText, click: onCancel },
-        { text: confirmText, click: onConfirm }
-      ]
-    }, params)
-    return this.open(config)
-  },
+  canCancel: CancelationMethods,
+  position: 'fixed',
   newComponent (options = {}) {
     const vm = typeof window !== 'undefined' && window.Vue ? window.Vue : Vue
     const DialogClass = vm.extend(DialogComponent)
@@ -35,6 +25,8 @@ const DialogProgrammatic = {
 
     const defaultParam = {
       isProgrammatic: true,
+      canCancel: this.canCancel,
+      position: this.position,
       content
     }
 
@@ -45,25 +37,57 @@ const DialogProgrammatic = {
     }
 
     const propsData = Object.assign(defaultParam, params)
-    let comp = this.newComponent({
+    return this.newComponent({
       parent,
       el: document.createElement('div'),
       propsData,
       store
     })
-    return comp
-  },
-  info (params) {
-    return this.open(params)
   },
   show (params) {
     return this.open(params)
+  },
+  info (params) {
+    let confirmText = Arr.getProperty(params, 'confirmText', this.confirmText)
+    return new Promise((resolve, reject) => {
+      let config = Object.assign({
+        buttons: [
+          { text: confirmText }
+        ]
+      }, params)
+      this.open(config).$on('close', () => {
+        setTimeout(() => { resolve() }, 250)
+      })
+    })
+  },
+  confirm (params = {}) {
+    let confirmText = Arr.getProperty(params, 'confirmText', this.confirmText)
+    let cancelText = Arr.getProperty(params, 'cancelText', this.cancelText)
+    return new Promise((resolve, reject) => {
+      let value = false
+      let config = Object.assign({
+        buttons: [
+          { text: cancelText },
+          { text: confirmText, click: () => { value = true } }
+        ]
+      }, params)
+      this.open(config).$on('close', () => {
+        setTimeout(() => { resolve(value) }, 250)
+      })
+    })
   }
 }
 
 const Plugin = {
   install (Vue, options) {
     let name = Arr.getProperty(options, 'name', 'dialog')
+    Object.keys(DialogProgrammatic).forEach((key) => {
+      let isFunction = typeof DialogProgrammatic[key] === 'function'
+      let hasOption = options.hasOwnProperty(key)
+      if (!isFunction && hasOption) {
+        DialogProgrammatic[key] = options[key]
+      }
+    })
     registerComponent(Vue, DialogComponent)
     registerComponentProgrammatic(Vue, name, DialogProgrammatic)
   }
@@ -72,7 +96,8 @@ use(Plugin)
 
 export {
   DialogComponent,
-  DialogProgrammatic
+  DialogProgrammatic,
+  CancelationMethods
 }
 
 export default Plugin
