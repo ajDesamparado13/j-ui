@@ -50,10 +50,7 @@ export default {
   methods: {
     getDateString (value) {
       if (value instanceof Date && !isNaN(value.valueOf())) {
-        var year = value.getFullYear()
-        var month = value.getMonth() + 1
-        var date = value.getDate()
-        value = `${year}/${month >= 10 ? month : '0' + month}/${date >= 10 ? date : '0' + date}`
+        return dateUtil.format(value, { format: this.format })
       }
       return value
     },
