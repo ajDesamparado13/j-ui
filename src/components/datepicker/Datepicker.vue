@@ -19,6 +19,7 @@ import Calendar from './Calendar'
 import { Field } from '../field'
 import { Dropdown } from '../dropdown'
 import Arr from 'freedom-js-support/src/utilities/arr'
+import dateUtil from 'freedom-js-support/src/utilities/date'
 
 export default {
   name: 'ui-datepicker',
@@ -57,7 +58,7 @@ export default {
       return value
     },
     setCalendarDate () {
-      this.$refs['calendar'].setDate(this.newValue)
+      if (dateUtil.isValid(this.newValue, this.format)) this.$refs['calendar'].setDate(this.newValue)
     }
   },
   watch: {
@@ -69,11 +70,8 @@ export default {
         this.setCalendarDate()
       }
     },
-    newValue (value) {
-      if (this.value === value) return
+    newValue (newValue) {
       this.setCalendarDate()
-      this.$emit('input', value)
-      this.$emit('value-change', value)
     }
   },
   components: {
