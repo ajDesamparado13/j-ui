@@ -26,7 +26,7 @@ export default {
   model: { prop: 'value', event: 'update' },
   data () {
     return {
-      newValue: ''
+      newValue: this.value
     }
   },
   props: {
@@ -49,26 +49,29 @@ export default {
   },
   methods: {
     getDateString (value) {
-      if (value instanceof Date && !isNaN(value.valueOf())) {
-        return dateUtil.format(value, { format: this.format })
-      }
-      return value
+      return dateUtil.format(value, { format: this.format })
     },
     setCalendarDate () {
-      if (dateUtil.isValid(this.newValue, this.format)) this.$refs['calendar'].setDate(this.newValue)
+      this.$nextTick(() => {
+        if (dateUtil.isValid(this.newValue, { format: this.format })) this.$refs['calendar'].setDate(this.newValue)
+      })
     }
   },
   watch: {
     value: {
       immediate: true,
       handler (value) {
-        if (value === this.newValue) return
-        this.newValue = value
-        this.setCalendarDate()
+        if (this.getDateString(this.newValue) !== this.getDateString(value)) {
+          this.newValue = this.getDateString(value)
+          this.setCalendarDate()
+        }
       }
     },
     newValue (newValue) {
       this.setCalendarDate()
+      if (this.value !== newValue) {
+        this.$emit('update', this.newValue)
+      }
     }
   },
   components: {
