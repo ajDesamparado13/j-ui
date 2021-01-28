@@ -1,6 +1,5 @@
 <template>
-    <input
-        class="input"
+    <input class="ui-input input"
         v-on="$listeners"
         v-bind="$attrs"
         :type="type"
@@ -10,20 +9,15 @@
 </template>
 
 <script>
-import config from '../config'
-import formatter from 'freedom-js-support/src/utilities/formatter'
-import masks from 'freedom-js-support/src/utilities/masks'
+import Formatter from 'freedom-js-support/src/utilities/formatter'
+import Masks from 'freedom-js-support/src/utilities/masks'
 export default {
   name: 'ui-input',
-  model: {
-    prop: 'value',
-    event: 'update'
-  },
+  model: { prop: 'value', event: 'update' },
   data () {
     return {
       preventUpdate: false,
       initialValue: this.value,
-      key: null,
       newValue: '',
       targetValue: ''
     }
@@ -38,12 +32,9 @@ export default {
       required: false
     },
     replaceOnInput: { type: Boolean, default: false },
-    toHalfWidth: { type: Boolean, default: false },
-    isLowercase: { type: Boolean, default: false },
-    isUppercase: { type: Boolean, default: false },
-    defaultInputClass: {
-      type: String,
-      default: config.defaultInputClass
+    filters: {
+      type: Array,
+      required: false
     },
     value: {
       type: [String, Number],
@@ -56,40 +47,27 @@ export default {
     format: {
       type: String,
       default: 'text' // text,number,decimal,date|option
-    },
-    beforeUpdate: {
-      type: Function,
-      required: false
-    },
-    beforeEnter: {
-      type: Function,
-      required: false
     }
   },
   computed: {
     formatObject () {
-      return formatter.getObjectParameters(this.format, { value: this.targetValue })
+      return Formatter.getObjectParameters(this.format, { value: this.targetValue })
     }
-
   },
   methods: {
     isEmpty (value) {
-      return formatter.isEmpty(value)
+      return Formatter.isEmpty(value)
     },
     onEnter (e) {
-      var value = e.target.value
-      if (typeof this.beforeEnter === 'function') {
-        value = this.beforeEnter(value)
-      }
-      this.setValue(value)
+      this.setValue(e.target.value)
       this.$nextTick(() => {
         this.$emit('keydown-enter', e)
       })
     },
     onKeydown (event) {
-      let key = masks.only.getKey(event)
+      let key = Masks.only.getKey(event)
 
-      if (masks.only.is_special_key(key)) {
+      if (Masks.only.is_special_key(key)) {
         return
       }
       var value = event.target.value
@@ -99,12 +77,12 @@ export default {
       }
       let { format, options } = this.formatObject
       switch (format) {
-        case 'number': return masks.only.number_keys(event, options)
-        case 'decimal': return masks.only.decimal_keys(event, options)
-        case 'password': return masks.only.password_keys(event, options)
+        case 'number': return Masks.only.number_keys(event, options)
+        case 'decimal': return Masks.only.decimal_keys(event, options)
+        case 'password': return Masks.only.password_keys(event, options)
       }
       if (format.indexOf('date') >= 0) {
-        return masks.only.date_keys(event)
+        return Masks.only.date_keys(event)
       }
     },
     updateValue (event) {
@@ -118,43 +96,31 @@ export default {
         this.setValue(value, key)
       })
     },
-    /*
-         * Set the raw value into formatted value
-         */
+    applyFilters (value) {
+      let filters = Array.isArray(this.filters) ? this.filters : []
+      filters.forEach((filter) => {
+        switch (filter.toLowerCase()) {
+          case 'tohalfwidth' : value = Formatter.toHalfWidth(value); break
+          case 'uppercase': value = value.toUpperCase(); break
+          case 'lowercase': value = value.toLowerCase(); break
+        }
+      })
+      return value
+    },
     setValue (value, key) {
-      if (this.isEmpty(value)) {
-        this.newValue = ''
-        return
-      }
+      if (this.isEmpty(value)) { this.newValue = ''; return }
 
-      if (this.toHalfWidth) {
-        value = formatter.toHalfWidth(value)
-      }
-
-      if (this.isLowercase) {
-        value = value.toLowerCase()
-      }
-      if (this.isUppercase) {
-        value = value.toUpperCase()
-      }
+      value = this.applyFilters(value)
 
       if (this.maxlength) {
-        var maxlength = Number(this.maxlength)
-        value = value.substring(0, maxlength)
+        value = value.substring(0, Number(this.maxlength))
       }
 
       var { format, options } = this.formatObject
       if (format === 'text') {
         this.newValue = value
-        return
-      } else if (!(key === '.' && format === 'decimal')) {
-        value = formatter.format(value, format, options)
       }
-      if (typeof this.beforeUpdate === 'function') {
-        this.newValue = this.beforeUpdate(value)
-      } else {
-        this.newValue = value
-      }
+      this.newValue = Formatter.format(value, format, options)
       this.$forceUpdate()
     },
     /*
@@ -162,44 +128,34 @@ export default {
          */
     getRaw (value) {
       var { format, options } = this.formatObject
-      if (format === 'text' || this.type !== 'text') {
-        return value
-      }
-      value = formatter.getValue(value, format, options)
+      if (!(format === 'text' || this.type !== 'text')) { return Formatter.getValue(value, format, options) }
       return value
     },
     clear () {
       this.preventUpdate = true
       this.newValue = ''
-      this.$nextTick(() => {
-        this.preventUpdate = false
-      })
+      this.$nextTick(() => { this.preventUpdate = false })
     },
     reset () {
-      // Blur the input if it's focused to prevent required errors
-      // when it's value is reset
-      if (document.activeElement === this.$el) {
-        document.activeElement.blur()
-      }
+      if (document.activeElement === this.$el) document.activeElement.blur()
       this.setValue(this.initialValue)
+    },
+    addEventListeners () {
+      this.$el.addEventListener('input', this.updateValue)
+      if (this.preventKeys && this.format != 'text') this.$el.addEventListener('keydown', this.onKeydown)
+      if (this.replaceOnInput) this.$el.addEventListener('focus', this.$el.select)
     }
   },
   watch: {
-    /**
-         * When v-model is changed:
-         *   1. Set internal value.
-         *   2. If it's invalid, validate again.
-         */
-    value (value) {
-      var val = this.isEmpty(value) ? value : this.getRaw(value)
-      if (this.getRaw(this.newValue) !== val) {
-        this.setValue(val)
+    value: {
+      immediate: true,
+      handler (value) {
+        var val = this.isEmpty(value) ? value : this.getRaw(value)
+        if (this.getRaw(this.newValue) !== val) {
+          this.setValue(val)
+        }
       }
     },
-    /*
-         * When newValue is updated emit newValue to v-model
-         *
-         */
     newValue (value) {
       var val = this.isEmpty(value) ? value : this.getRaw(value)
       if (val !== this.getRaw(this.value) && !this.preventUpdate) {
@@ -207,25 +163,8 @@ export default {
       }
     }
   },
-  created () {
-    var value = this.value
-    if (this.isEmpty(value)) {
-      this.initialValue = ''
-    }
-    this.setValue(value)
-  },
   mounted () {
-    // if(this.format != 'text'){
-    // this.$el.onchange = this.updateValue;
-    // }else{
-    this.$el.addEventListener('input', this.updateValue)
-    // }
-    if (this.preventKeys && this.format != 'text') {
-      this.$el.addEventListener('keydown', this.onKeydown)
-    }
-    if (this.replaceOnInput) {
-      this.$el.addEventListener('focus', this.$el.select)
-    }
+    this.addEventListeners()
   }
 }
 </script>

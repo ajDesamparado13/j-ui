@@ -1,8 +1,8 @@
 <template>
 <ui-field class="ui-datepicker" v-bind="$attrs">
-    <ui-dropdown ref="dropdown" v-bind="{disabled}">
+    <ui-dropdown ref="dropdown" v-bind="$_Arr.only($attrs,['disabled'])">
         <template slot="trigger">
-            <ui-input v-model="newValue" ref="input" v-bind="{disabled}"
+            <ui-input v-model="newValue" ref="input" v-bind="$_Arr.only($attrs,['disabled'])"
             v-on="$listeners"
             :format="`date|fromString:${format}`"
             />
@@ -22,23 +22,15 @@ import Arr from 'freedom-js-support/src/utilities/arr'
 
 export default {
   name: 'ui-datepicker',
+  model: { prop: 'value', event: 'update' },
   data () {
     return {
-      initialValue: this.value,
       newValue: ''
     }
   },
   props: {
-    disabled: { type: Boolean, default: false },
     format: { type: String, default: 'Y-m-d' },
-    readonly: {
-      type: Boolean,
-      default: true
-    },
-    value: {
-      type: [String, Number, Date],
-      default: ''
-    },
+    value: { type: [String, Number, Date], default: '' },
     minDate: { type: Date, default: () => { return new Date(1990, 1, 1) } },
     maxDate: { type: Date, default: () => { return new Date() } }
   },
@@ -49,8 +41,7 @@ export default {
         this.$refs['dropdown'].close()
       },
       get () {
-        var value = this.newValue.replace(/[/,_]/g, '-')
-        var arr = value.split('-')
+        var arr = this.newValue.replace(/[/,_]/g, '-').split('-')
         return new Date(arr[0] || new Date().getFullYear(), arr[1] - 1 || 0, arr[2] || 1)
       }
     }
@@ -65,45 +56,24 @@ export default {
       }
       return value
     },
-    onActiveChange (isActive) {
-      if (!isActive) return
-      this.$refs['calendar'].initialize()
-    },
-    setCalendar () {
-      if (!this.newValue) {
-        this.dateObj = ''
-      }
+    setCalendarDate () {
       this.$refs['calendar'].setDate(this.newValue)
-    },
-    calendarSelect (val) {
-      this.$refs['dropdown'].close()
-      if (document.activeElement === this.$refs['input'].$el) {
-        return
-      }
-      this.$refs['input'].setValue(Arr.getProperty(val, 'target.value', val))
     }
   },
   watch: {
-    value (value) {
-      if (value === this.newValue) return
-      this.newValue = value
-      this.setCalendar()
+    value: {
+      immediate: true,
+      handler (value) {
+        if (value === this.newValue) return
+        this.newValue = value
+        this.setCalendarDate()
+      }
     },
     newValue (value) {
       if (this.value === value) return
-      this.setCalendar()
+      this.setCalendarDate()
       this.$emit('input', value)
       this.$emit('value-change', value)
-    }
-  },
-
-  created () {
-    // Normalize the value to an empty string if it's null
-    if (this.value === null) {
-      this.initialValue = ''
-      // this.updateValue('');
-    } else if (this.value) {
-      // this.updateValue(this.value);
     }
   },
   components: {
