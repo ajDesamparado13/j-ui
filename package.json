@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "autosize": "^4.0.2",
-    "freedom-js-support": "^1.0.27",
+    "freedom-js-support": "^1.0.29",
     "lodash": "^4.17.20",
     "tether-drop": "^1.4.2",
     "vue-svgicon": "^3.2.6"
