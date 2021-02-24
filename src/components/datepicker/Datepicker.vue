@@ -1,6 +1,6 @@
 <template>
 <ui-field class="ui-datepicker" v-bind="$_Arr.only($attrs,['label','required','loading','invalid','name','disabled','error','help'])">
-  <v-date-picker locale="ja" ref="datePicker" v-model="date" v-bind="$attrs" v-on="$listeners" :format="format" @dayclick="onDayClick">
+  <v-date-picker ref="datePicker" v-model="date" v-bind="$attrs" v-on="$listeners" :format="format" @dayclick="onDayClick">
       <template v-slot="{ inputValue, inputEvents }">
         <ui-input v-on="inputEvents" ref="input" v-bind="$_Arr.only($attrs,['disabled'])" v-model="newValue" :format="`date|fromString:${format}`" />
       </template>
