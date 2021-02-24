@@ -7,7 +7,6 @@ const Plugin = {
   install (Vue,options) {
     Vue.use(VCalendar,options)
     registerComponent(Vue, Datepicker,Object.assign(defaults,options))
-    console.log(Datepicker)
   }
 }
 use(Plugin)
