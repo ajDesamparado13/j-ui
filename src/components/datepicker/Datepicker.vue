@@ -13,33 +13,33 @@
 import { Field } from '../field'
 import Arr from 'freedom-js-support/src/utilities/arr'
 import dateUtil from 'freedom-js-support/src/utilities/date'
-import defaults from './defaults';
+import defaults from './defaults'
 
 export default {
   name: 'ui-datepicker',
-  inheritAttrs:false,
+  inheritAttrs: false,
   model: { prop: 'value', event: 'update' },
   data () {
     return {
       date: new Date(),
-      newValue: this.value
+      newValue: this.getDateString(this.value)
     }
   },
   props: {
     locale: { type: String, default: defaults.locale },
     format: { type: String, default: defaults.format },
-    value: { type: [String, Number, Date], default: '' },
+    value: { type: [String, Number, Date], default: '' }
   },
   methods: {
-    onDayClick(day) {
-      this.newValue = this.getDateString(day.date);
+    onDayClick (day) {
+      this.newValue = this.getDateString(day.date)
     },
     getDateString (value) {
       return dateUtil.format(value, { format: this.format })
     },
-    setCalendarDate(){
-      this.date = dateUtil.isValid(this.newValue,this.format) ? new Date(this.newValue) : new Date()
-    },
+    setCalendarDate () {
+      this.date = dateUtil.isValid(this.newValue, this.format) ? new Date(this.newValue) : new Date()
+    }
   },
   watch: {
     value: {
@@ -49,12 +49,12 @@ export default {
       }
     },
     newValue (newValue) {
-      this.setCalendarDate();
+      this.setCalendarDate()
       if (this.value !== newValue) this.$emit('update', this.newValue)
     }
   },
   components: {
-    'ui-field': Field,
-  },
+    'ui-field': Field
+  }
 }
 </script>
