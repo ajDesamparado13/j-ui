@@ -1,3 +1,4 @@
+import VCalendar from 'v-calendar'
 import Datepicker from './Datepicker'
 import { use, registerComponent } from 'freedom-js-support/src/helpers/plugin'
 
@@ -6,7 +7,8 @@ export {
 }
 
 const Plugin = {
-  install (Vue) {
+  install (Vue,options) {
+    Vue.use(VCalendar,options)
     registerComponent(Vue, Datepicker)
   }
 }
