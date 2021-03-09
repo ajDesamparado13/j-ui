@@ -11,7 +11,6 @@
 <script>
 
 import { Field } from '../field'
-import Arr from 'freedom-js-support/src/utilities/arr'
 import dateUtil from 'freedom-js-support/src/utilities/date'
 import defaults from './defaults'
 
@@ -39,6 +38,7 @@ export default {
     },
     setCalendarDate () {
       this.date = dateUtil.isValid(this.newValue, this.format) ? new Date(this.newValue) : new Date()
+      return this
     }
   },
   watch: {
@@ -46,6 +46,7 @@ export default {
       immediate: true,
       handler (value) {
         if (this.getDateString(this.newValue) !== this.getDateString(value)) this.newValue = this.getDateString(value)
+        if (this.newValue !== value) this.$emit('update', this.newValue)
       }
     },
     newValue (newValue) {
