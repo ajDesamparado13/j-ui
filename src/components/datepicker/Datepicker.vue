@@ -34,7 +34,7 @@ export default {
       this.newValue = this.getDateString(day.date)
     },
     getDateString (value) {
-      return dateUtil.format(value, { format: this.format })
+      return value ? dateUtil.format(value, { format: this.format }) : ''
     },
     setCalendarDate () {
       this.date = dateUtil.isValid(this.newValue, this.format) ? new Date(this.newValue) : new Date()
