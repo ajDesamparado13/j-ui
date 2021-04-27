@@ -198,7 +198,8 @@ export default {
       this.emitToggle()
     },
     emitToggle () {
-      if (this.doEmit) {
+      if (!this.doEmit) {
+        this.$emit(this.isChecked ? 'checked' : 'unchecked', this.newValue)
         this.$emit('toggled', {
           isChecked: this.isChecked,
           isInverse: this.isInverse,
@@ -208,22 +209,12 @@ export default {
       }
       this.doEmit = true
     },
-    /*
-         * Check if value is an object type
-         */
     isObject (val) {
       return !Array.isArray(val) && typeof val === 'object'
     },
-    /*
-         * Loosely Check if value a and b are equal
-         */
     looseEqual (a, b) {
-      // eslint-disable-next-line eqeqeq
       if (this.isObject(a) && this.isObject(b)) {
-        if (this.keyName) {
-          var key = this.keyName
-          return a[key] === b[key]
-        }
+        if (this.keyName) return a[this.keyName] === b[this.keyName]
         return JSON.stringify(a) === JSON.stringify(b)
       }
       return a === b

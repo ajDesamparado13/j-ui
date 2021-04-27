@@ -12,27 +12,16 @@
         </template>
         <template v-else>
             <label v-if="label && labelPosition=='top'" class="label" :labelFor="name">
-                <span class="label-text">
-                    {{label}}
-                </span>
-                <span v-if="required && requiredText" class="label-required">
-                    {{requiredText}}
-                </span>
-                <span v-if="hasExtra" class="label-extra">
-                    <slot name="extra">
-                    </slot>
-                    <template v-if="extraText">
-                        {{extraText}}
-                    </template>
-                </span>
+                <span class="label-text" v-html="label"> </span>
+                <span v-if="required && requiredText" class="label-required" v-html="requiredText"></span>
             </label>
             <div class="form-content">
-                <label v-if="label && labelPosition!='top'" class="label" :labelFor="name">{{label}}</label>
+                <label v-if="label && labelPosition!='top'" class="label" :labelFor="name" v-html="label"></label>
                 <slot></slot>
             </div>
             <slot name="after"></slot>
             <div class="feedback" v-if="feedback">
-                <p class="help" :class="status" > {{ feedback }} </p>
+                <p class="help" :class="status" v-html="feedback"></p>
                 <slot name="help"></slot>
             </div>
         </template>
