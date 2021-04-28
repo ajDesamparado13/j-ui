@@ -1,49 +1,53 @@
+import Arr from 'freedom-js-support/src/utilities/arr'
+import ModalComponent from './Modal'
+import { use, registerComponent, registerComponentProgrammatic } from 'freedom-js-support/src/helpers/plugin'
 import Vue from 'vue'
 
-import Modal from './Modal'
-import { use, registerComponentProgrammatic } from 'freedom-js-support/src/helpers/plugin'
-
-const modalProgrammatic = {
+import { CancelationMethods } from '../BaseModal'
+const ModalProgrammatic = {
+  appQuerySelector: '#app',
+  canCancel: CancelationMethods,
+  position: 'fixed',
   newComponent (options = {}) {
     const vm = typeof window !== 'undefined' && window.Vue ? window.Vue : Vue
-    const ModalComponent = vm.extend(Modal)
-    return new ModalComponent(options)
+    const ModalClass = vm.extend(ModalComponent)
+    return new ModalClass(options)
   },
   open (params) {
-    let content
-    let parent
-    if (typeof params === 'string') content = params
+    let parent = Arr.getProperty(params, 'parent', undefined)
+    if (params.parent) { delete params.parent }
 
     const defaultParam = {
-      programmatic: true,
-      content
-
-    }
-    if (params.parent) {
-      parent = params.parent
-      delete params.parent
+      isProgrammatic: true,
+      isActive: true,
+      canCancel: this.canCancel,
+      position: this.position,
+      content: typeof params === 'string' ? params : Arr.getProperty(params, 'content', '')
     }
 
-    var store = {}
-    if (typeof params.store !== 'undefined') {
-      store = params.store
-      delete params.store
-    }
-    const propsData = Object.assign(defaultParam, params)
     return this.newComponent({
       parent,
       el: document.createElement('div'),
-      propsData,
-      store
+      propsData: Object.assign(defaultParam, params)
     })
+  },
+  show (params) {
+    return this.open(params)
   }
 }
 
-export { Modal }
-
 const Plugin = {
-  install (Vue) {
-    registerComponentProgrammatic(Vue, 'modal', modalProgrammatic)
+  install (Vue, options) {
+    let name = Arr.getProperty(options, 'name', 'dialog')
+    Object.keys(ModalProgrammatic).forEach((key) => {
+      let isFunction = typeof ModalProgrammatic[key] === 'function'
+      let hasOption = options.hasOwnProperty(key)
+      if (!isFunction && hasOption) {
+        ModalProgrammatic[key] = options[key]
+      }
+    })
+    registerComponent(Vue, ModalComponent)
+    registerComponentProgrammatic(Vue, name, ModalProgrammatic)
   }
 }
 use(Plugin)

@@ -20,133 +20,19 @@
 
 <script>
 
-import { CancelationMethods } from './index'
+import BaseModal from '../BaseModal'
 export default {
   name: 'ui-dialog',
+  extends: BaseModal,
   props: {
     buttons: {
       type: Array,
       required: false
-    },
-    animation: {
-      type: String,
-      default: 'zoom-out'
-    },
-    content: {
-      type: String,
-      default: ''
-    },
-    component: [Object, Function],
-    container: HTMLElement,
-    isProgrammatic: {
-      type: Boolean,
-      default: false
-    },
-    props: {
-      type: Object,
-      required: false
-    },
-    events: {
-      type: Object,
-      required: false
-    },
-    canCancel: {
-      type: [Array, Boolean],
-      default: () => CancelationMethods
-    },
-    position: {
-      type: String,
-      default: 'fixed'
-    }
-  },
-  computed: {
-    cancelOptions () {
-      if (Array.isArray(this.canCancel)) {
-        return this.canCancel
-      }
-      return this.canCancel ? CancelationMethods : []
-    },
-    showX () {
-      return this.cancelOptions.indexOf('x') >= 0
     }
   },
   methods: {
     getText (btn) {
       return this.$_Arr.getProperty(btn, 'text', '')
-    },
-    getEvents (btn) {
-      return Object.keys(btn).reduce((events, key, index) => {
-        if (typeof btn[key] === 'function') {
-          events[key] = (event) => { btn[key](); this.close(event) }
-        }
-        return events
-      }, { click: () => { this.close() } })
-    },
-    getProps (btn) {
-      return Object.keys(btn).reduce((props, key, index) => {
-        if (typeof btn[key] !== 'function') {
-          props[key] = btn[key]
-        }
-        return props
-      }, {})
-    },
-    cancel (method) {
-      return this.cancelOptions.indexOf(method) < 0 ? null : this.close(method)
-    },
-    close (event = null) {
-      this.$emit('close', event)
-      if (this.isProgrammatic) {
-        this.$destroy()
-        this.removeElement(this.$el)
-      }
-    },
-    removeElement (el) {
-      if (typeof el.remove !== 'undefined') {
-        el.remove()
-      } else {
-        el.parentNode.removeChild(el)
-      }
-    },
-    onEscape () {
-      if (event.keyCode !== 27) {
-        return
-      }
-      this.cancel('escape')
-    },
-    mountToBody () {
-      document.body.appendChild(this.$el)
-    },
-    mountToContainer () {
-      let container = this.container
-      if (container._isVue) {
-        this.container = container.$el
-      }
-      this.previous_style = this.container.style
-      if (!this.isProgrammatic) {
-        this.container.style = 'position:relative;'
-      }
-      this.container.insertBefore(this.$el, this.container.firstChild)
-    }
-  },
-  beforeMount () {
-    if (!this.container) {
-      this.mountToBody()
-      return
-    }
-    let container = this.container
-    if (container._isVue) {
-      container.$on('hook:mounted', this.mountToContainer)
-      return
-    }
-    if (container instanceof HTMLElement) {
-      this.mountToContainer()
-      return
-    }
-    this.mountToBody()
-  },
-  created () {
-    if (typeof window !== 'undefined') {
-      document.addEventListener('keyup', this.onEscape)
     }
   }
 }

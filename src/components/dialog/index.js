@@ -3,8 +3,7 @@ import DialogComponent from './Dialog'
 import { use, registerComponent, registerComponentProgrammatic } from 'freedom-js-support/src/helpers/plugin'
 import Vue from 'vue'
 
-const CancelationMethods = ['escape', 'x', 'outside', 'button']
-
+import { CancelationMethods } from '../BaseModal'
 const DialogProgrammatic = {
   confirmText: 'OK',
   cancelText: 'CANCEL',
@@ -16,32 +15,21 @@ const DialogProgrammatic = {
     return new DialogClass(options)
   },
   open (params) {
-    let content = typeof params === 'string' ? params : Arr.getProperty(params, 'content', '')
-    let parent = null
-    if (Arr.hasProperty(params, 'parent')) {
-      parent = Arr.getProperty(params, 'parent', null)
-      delete params.parent
-    }
+    let parent = Arr.getProperty(params, 'parent', undefined)
+    if (params.parent) { delete params.parent }
 
     const defaultParam = {
+      isActive: true,
       isProgrammatic: true,
       canCancel: this.canCancel,
       position: this.position,
-      content
+      content: typeof params === 'string' ? params : Arr.getProperty(params, 'content', '')
     }
 
-    let store = null
-    if (Arr.hasProperty(params, 'store')) {
-      store = Arr.getProperty(params, 'store', null)
-      delete params.store
-    }
-
-    const propsData = Object.assign(defaultParam, params)
     return this.newComponent({
       parent,
       el: document.createElement('div'),
-      propsData,
-      store
+      propsData: Object.assign(defaultParam, params)
     })
   },
   show (params) {

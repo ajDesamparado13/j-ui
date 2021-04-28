@@ -24,6 +24,10 @@ export default {
       type: Boolean,
       default: false
     },
+    isActive: {
+      type: Boolean,
+      default: false
+    },
     canCancel: {
       type: [Array, Boolean],
       default: () => CancelationMethods
@@ -43,6 +47,22 @@ export default {
     }
   },
   methods: {
+    getEvents (btn) {
+      return Object.keys(btn).reduce((events, key, index) => {
+        if (typeof btn[key] === 'function') {
+          events[key] = (event) => { btn[key](); this.close(event) }
+        }
+        return events
+      }, { click: () => { this.close() } })
+    },
+    getProps (btn) {
+      return Object.keys(btn).reduce((props, key, index) => {
+        if (typeof btn[key] !== 'function') {
+          props[key] = btn[key]
+        }
+        return props
+      }, {})
+    },
     cancel (method) {
       return this.cancelOptions.indexOf(method) < 0 ? null : this.close(method)
     },
