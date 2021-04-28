@@ -1,24 +1,12 @@
 <template>
     <transition :name="animation">
         <div v-if="isActive" class="ui-modal modal is-active">
-            <div class="modal-background" @click="cancel('outside')"/>
-            <div
-                class="animation-content box"
-                ref="content"
-                :class="{ 'modal-content': !hasModalCard }"
-                >
-                <component
-                    v-if="component"
-                    v-bind="props"
-                    v-on="events"
-                    :is="component"
-                    @close="close"/>
-                <div
-                    v-else-if="content"
-                    v-html="content"/>
+            <div class="modal-background" @click="cancel('outside')"></div>
+            <div class="animation-content box position-relative" ref="content" :class="{ 'modal-content': !hasModalCard }" >
+                <component v-if="component" v-bind="props" v-on="events" :is="component" @close="close"/>
+                <div v-else-if="content" v-html="content"/>
                 <slot v-else/>
-            </div>
-                <button class="modal-close is-large" v-if="false" @click="cancel('x')" type="button">X</button>
+              <button class="modal-close" @click="cancel('x')" type="button"></button>
             </div>
         </div>
     </transition>
