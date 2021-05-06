@@ -9,10 +9,15 @@ const ModalProgrammatic = {
   inheritOptions: ['directives', 'store', 'router', 'computed', 'filters'],
   canCancel: CancelationMethods,
   position: 'fixed',
-  newComponent (options = {}) {
-    const vm = typeof window !== 'undefined' && window.Vue ? window.Vue : Vue
+  getAppOptions () {
     const app = document.querySelector(this.appQuerySelector)
     let $options = Arr.getProperty(app, '__vue__.$options', {})
+    let hasOptions = Object.keys($options).filter((key) => { return this.inheritOptions.includes(key) }).length > 0
+    return hasOptions ? $options : Arr.getProperty($options, 'parent.$options', {})
+  },
+  newComponent (options = {}) {
+    const vm = typeof window !== 'undefined' && window.Vue ? window.Vue : Vue
+    const $options = this.getAppOptions()
     Object.keys($options).forEach((key) => {
       if (this.inheritOptions.includes(key)) options[key] = $options[key]
     })
