@@ -1,5 +1,5 @@
 <template>
-    <ui-field class="ui-textbox"  v-bind="$_Arr.only($attrs,['label','required','loading','invalid','name','disabled','error','help'])" >
+    <ui-field class="ui-textbox"  v-bind="$_Arr.only($attrs,['label','required','loading','invalid','name','disabled','error','help','note'])" >
         <ui-control v-bind="$_Arr.only($attrs,['icon','iconLeft','iconRight','iconPosition'])">
             <component ref="input" v-bind="$attrs" v-model="newValue" v-on="$listeners"
             :autocomplete="autocomplete ? autocomplete : null"

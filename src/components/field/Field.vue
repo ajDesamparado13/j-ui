@@ -13,7 +13,8 @@
         <template v-else>
             <label v-if="label && labelPosition=='top'" class="label" :labelFor="name">
                 <span class="label-text" v-html="label"> </span>
-                <span v-if="required && requiredText" class="label-required" v-html="requiredText"></span>
+                <span class="label-required" v-if="required && requiredText"  v-html="requiredText"></span>
+                <div class="label-note" v-html="note"> </div>
             </label>
             <div class="form-content">
                 <label v-if="label && labelPosition!='top'" class="label" :labelFor="name" v-html="label"></label>
@@ -45,7 +46,7 @@ export default {
     requiredText: { type: String, default: 'required' },
     required: { type: Boolean, default: false },
     label: { type: String, default: '' },
-    extraText: { type: String, default: '' },
+    note: { type: String, default: '' },
     labelPosition: { type: String, default: 'top' },
     name: { type: String, default: '' },
     disabled: { type: Boolean, default: false },
@@ -76,9 +77,6 @@ export default {
     },
     isActive () {
       return this.isFocused && !this.invalid
-    },
-    hasExtra () {
-      return this.$slots['extra'] || this.extraText
     }
   },
   methods: {
