@@ -106,6 +106,12 @@ export default {
     },
     removeIOSSupport () {
       document.body.classList.remove('ios-position-fixed')
+    },
+    addNoScroll () {
+      document.body.classList.add('is-noscroll')
+    },
+    removeNoScroll () {
+      document.body.classList.remove('is-noscroll')
     }
   },
   beforeMount () {
@@ -114,6 +120,7 @@ export default {
     if (container._isVue) return container.$on('hook:mounted', this.mountToContainer)
     if (container instanceof HTMLElement) return this.mountToContainer()
     this.mountToBody()
+    this.addNoScroll()
   },
   created () {
     this.addIOSSupport()
@@ -121,8 +128,7 @@ export default {
   },
   beforeDestroy () {
     this.removeIOSSupport()
+    this.removeNoScroll()
     if (typeof window !== 'undefined') document.removeEventListener('keyup', this.onKeyPress)
-    document.documentElement.classList.toggle('is-clipped', this.isActive)
-    document.body.classList.toggle('is-noscroll', this.isActive)
   }
 }
