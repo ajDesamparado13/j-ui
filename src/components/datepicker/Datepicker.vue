@@ -1,5 +1,5 @@
 <template>
-<ui-field class="ui-datepicker" v-bind="$_Arr.only($attrs,['label','required','loading','invalid','name','disabled','error','help'])">
+<ui-field class="ui-datepicker" v-bind="FieldProps">
   <v-date-picker ref="datePicker" v-model="date" v-bind="Object.assign($attrs,{locale})" v-on="$listeners" :format="format" @dayclick="onDayClick">
       <template v-slot="{ inputValue, inputEvents }">
         <ui-input v-on="inputEvents" ref="input" v-bind="$_Arr.only($attrs,['disabled'])" v-model="newValue" :format="`date|fromString:${format}`" />
@@ -10,12 +10,13 @@
 
 <script>
 
-import { Field } from '../field'
 import dateUtil from 'freedom-js-support/src/utilities/date'
 import defaults from './defaults'
+import BaseField from '../BaseField'
 
 export default {
   name: 'ui-datepicker',
+  extends: BaseField,
   inheritAttrs: false,
   model: { prop: 'value', event: 'update' },
   data () {
@@ -53,9 +54,6 @@ export default {
       this.setCalendarDate()
       if (this.value !== newValue) this.$emit('update', this.newValue)
     }
-  },
-  components: {
-    'ui-field': Field
   }
 }
 </script>

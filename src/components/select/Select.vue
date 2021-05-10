@@ -1,5 +1,5 @@
 <template>
-<ui-field class="ui-select" v-bind="$_Arr.only($attrs,['label','required','loading','invalid','name','disabled','error','help'])" >
+<ui-field class="ui-select" v-bind="FieldProps" >
     <input class="ui-select__hidden-input" type="hidden" v-bind="$_Arr.only($attrs,'name')" :value="newValue" v-if="$attrs['name']" >
     <div class="control">
         <select :class="{ 'is-placeholder': $_formatter.isEmpty(value) }" ref="select" v-bind="$attrs" :value="newValue" @input="updateValue">
@@ -11,8 +11,9 @@
 </ui-field>
 </template>
 <script>
-import { Field } from '../field'
+import BaseField from '../BaseField'
 export default {
+  extends: BaseField,
   name: 'ui-select',
   model: { prop: 'value', event: 'update' },
   data () {
@@ -77,9 +78,6 @@ export default {
         return (this.$_Arr.getProperty(item, this.keyValue, item)) === val
       })
     }
-  },
-  components: {
-    'ui-field': Field
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <ui-field class="ui-textbox"  v-bind="$_Arr.only($attrs,['label','required','loading','invalid','name','disabled','error','help','note'])" >
+    <ui-field class="ui-textbox"  v-bind="FieldProps" >
         <ui-control v-bind="$_Arr.only($attrs,['icon','iconLeft','iconRight','iconPosition'])">
             <component ref="input" v-bind="$attrs" v-model="newValue" v-on="$listeners"
             :autocomplete="autocomplete ? autocomplete : null"
@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import BaseUI from '../BaseUI'
 import { Control } from '../control'
 import Area from './Area'
 import Input from './Input'
 import Field from '../field/Field'
+import BaseField from '../BaseField'
 
 export default {
-  extends: BaseUI,
+  extends: BaseField,
   name: 'ui-textbox',
   model: {
     prop: 'value',
