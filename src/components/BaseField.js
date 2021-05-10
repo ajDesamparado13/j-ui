@@ -1,5 +1,5 @@
 import Arr from 'freedom-js-support/src/utilities/arr'
-import { Field } from '../field'
+import { Field } from './field'
 export default {
   computed: {
     FieldProps () {
