@@ -9,7 +9,7 @@
             :is="type ==='textarea' ? 'ui-textarea' : 'ui-input'"
             />
         </ui-control>
-        <slot slot="after"></slot>
+        <slot></slot>
         <small
             v-if="maxlength && enforceMaxlength"
             slot="help"
