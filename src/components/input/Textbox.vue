@@ -10,13 +10,7 @@
             />
         </ui-control>
         <slot></slot>
-        <small
-            v-if="maxlength && enforceMaxlength"
-            slot="help"
-            class="help counter"
-            :class="{ 'is-invisible': !isFocused }">
-            {{ valueLength }} / {{ maxlength }}
-        </small>
+        <small v-if="maxlength && enforceMaxlength" slot="help" class="help counter" > {{ valueLength }} / {{ maxlength }} </small>
     </ui-field>
 </template>
 
