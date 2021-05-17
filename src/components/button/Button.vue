@@ -77,17 +77,12 @@ export default {
   },
   methods: {
     async onClick () {
-      if (typeof this.handler !== 'function') {
-        return
-      }
+      if (typeof this.handler !== 'function') return
 
       var promise = this.handler(this.model)
-
       if (promise && typeof promise.then === 'function') {
         this.handler_loading = true
-        promise.finally(() => {
-          this.handler_loading = false
-        })
+        promise.then(() => { this.handler_loading = false })
       }
     }
   }
