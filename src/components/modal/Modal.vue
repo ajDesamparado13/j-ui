@@ -6,7 +6,7 @@
                 <component v-if="component" v-bind="props" v-on="events" :is="component" @close="close"/>
                 <div v-else-if="content" v-html="content"/>
                 <slot v-else/>
-              <button class="modal-close" @click="cancel('x')" type="button"></button>
+              <button v-if="showX" class="modal-close" @click="cancel('x')" type="button"></button>
             </div>
         </div>
     </transition>

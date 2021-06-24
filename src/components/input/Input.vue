@@ -77,6 +77,7 @@ export default {
       }
       let { format, options } = this.formatObject
       switch (format) {
+        case 'digit': return Masks.only.digit_keys(event, options)
         case 'number': return Masks.only.number_keys(event, options)
         case 'decimal': return Masks.only.decimal_keys(event, options)
         case 'password': return Masks.only.password_keys(event, options)
